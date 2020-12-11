@@ -6,3 +6,7 @@ bin/
 Image_Module/.mvn/
 
 .project
+
+.metadata/.plugins/org.eclipse.m2e.logback.configuration/
+
+.metadata/
