@@ -3,6 +3,9 @@ package com.home.DTO;
 import java.sql.Date;
 import java.util.List;
 
+import com.home.entities.LocationEntity;
+import com.home.entities.PhoneEntity;
+
 public class UserProfileFullInfoDTO {
 
 	private String name;
@@ -27,8 +30,9 @@ public class UserProfileFullInfoDTO {
 	private String landLineOne;
 	private String landLineTwo;
 	private String landLineThree;
-	private List<String> Locations;
-	private List<String> phones;
+	private List<LocationEntity> Locations;
+	private List<PhoneEntity> phones;
+	
 
 	public String getName() {
 		return name;
@@ -206,19 +210,20 @@ public class UserProfileFullInfoDTO {
 		this.landLineThree = landLineThree;
 	}
 
-	public List<String> getLocations() {
+
+	public List<LocationEntity> getLocations() {
 		return Locations;
 	}
 
-	public void setLocations(List<String> locations) {
+	public void setLocations(List<LocationEntity> locations) {
 		Locations = locations;
 	}
 
-	public List<String> getPhones() {
+	public List<PhoneEntity> getPhones() {
 		return phones;
 	}
 
-	public void setPhones(List<String> phones) {
+	public void setPhones(List<PhoneEntity> phones) {
 		this.phones = phones;
 	}
 

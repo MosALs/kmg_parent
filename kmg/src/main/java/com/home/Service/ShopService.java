@@ -6,6 +6,9 @@ import org.springframework.stereotype.Service;
 
 import com.home.DTO.UserProfileFullInfoDTO;
 import com.home.entities.ShopEntity;
+import com.home.util.ReturnedResultModel;
+
+import javassist.NotFoundException;
 
 @Service
 public interface ShopService {
@@ -22,6 +25,6 @@ public interface ShopService {
 
 	int ModifyByshop(String newshopName, String oldshopNamee);
 
-	List<ShopEntity> getByUserId(int userId);
+	ReturnedResultModel getByUserId(int userId)throws NotFoundException;
 
 }

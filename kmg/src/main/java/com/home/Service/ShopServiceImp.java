@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.home.DTO.UserProfileFullInfoDTO;
@@ -21,6 +22,10 @@ import com.home.entities.LocationEntity;
 import com.home.entities.PhoneEntity;
 import com.home.entities.ShopEntity;
 import com.home.entities.SpecializationEntity;
+import com.home.util.HelperResultUtil;
+import com.home.util.ReturnedResultModel;
+
+import javassist.NotFoundException;
 
 @Service
 public class ShopServiceImp implements ShopService {
@@ -95,23 +100,32 @@ public class ShopServiceImp implements ShopService {
 	}
 
 	@Override
-	public List<ShopEntity> getByUserId(int userId) {
+	public ReturnedResultModel getByUserId(int userId) throws NotFoundException {
 		UserProfileFullInfoDTO infoDTO = new UserProfileFullInfoDTO();
 
 		List<LocationEntity> locations = new ArrayList<LocationEntity>();
+		
 		List<PhoneEntity> phones = new ArrayList<PhoneEntity>();
+
 		List<ShopEntity> shops = shopRepository.findByUserId(userId);
-//		if (shops != null && shops.size() == 1) {
+		if (shops == null || shops.size() == 0) {
+			throw new NotFoundException("Shops not found for this user");
+//			ReturnedResultModel r = HelperResultUtil.fillResultModel(null, "Shops not found for this user", HttpStatus.NOT_FOUND, null);
+		}
 		// user is worker or client.
 		ShopEntity shopEntity = shops.get(0);
+		
 		int usersId = shopEntity.getUserId();
 		System.out.println("usersId: " + usersId);
 		AppUserEntity appUserEntity = appUserService.getUserById(userId);
 
-		int locationId = shopEntity.getLocationId();
-		System.out.println("locationId: " + locationId);
-		LocationEntity locationEntity = locationService.getByLocationID(locationId);
-		locations.add(locationEntity);
+		if(shopEntity.getLocationId() !=null) {
+			int locationId = shopEntity.getLocationId();
+			System.out.println("locationId: " + locationId);
+			LocationEntity locationEntity = locationService.getByLocationID(locationId);
+			locations.add(locationEntity);
+		}
+		
 
 		int accountTypeId = shopEntity.getAccountTypeId();
 		System.out.println("acccountTypeId: " + accountTypeId);
@@ -122,11 +136,12 @@ public class ShopServiceImp implements ShopService {
 		PhoneEntity phoneEntity = phoneService.getPhoneById(phoneId);
 		phones.add(phoneEntity);
 
-		if (accountTypeEntity.getAccountTypeName().equals("صنايعى")) {
+		if (!accountTypeEntity.getAccountTypeName().equals("عميل")) {
 			int specializationId = shopEntity.getSpecializationId();
 			System.out.println("specializationId: " + specializationId);
 			SpecializationEntity specializationEntity = specializationService.getBySpecializationID(specializationId);
 
+			
 		}
 
 		if (shops.size() > 1) {
@@ -139,42 +154,48 @@ public class ShopServiceImp implements ShopService {
 					System.out.println("locationId: " + locId);
 					LocationEntity locEntity = locationService.getByLocationID(locId);
 					locations.add(locEntity);
+					
 					int phonId = shops.get(i).getPhoneId();
 					System.out.println("phonId: " + phonId);
 					PhoneEntity phonEntit = phoneService.getPhoneById(phoneId);
 					phones.add(phonEntit);
-
 				}
-
 			}
-
 		}
-		List<String> locNames = new ArrayList<>();
-		locations.forEach(location -> {
-			String locName = location.getLocationName();
-			locNames.add(locName);
-		});
-		List<String> phNambers=new ArrayList<>();
-		phones.forEach(phone -> {
-			String phoneNamber=phone.getMobileOne();
-			phNambers.add(phoneNamber);
-		});
+//		List<String> locNames = new ArrayList<>();
+//		locations.forEach(location -> {
+//			String locName = location.getLocationName();
+//			locNames.add(locName);
+//		});
+//		
+//		List<String> phNambers = new ArrayList<>();
+//		phones.forEach(phone -> {
+//			String phoneNamber = phone.getMobileOne();
+//			
+//			phNambers.add(phoneNamber);
+//		});
 		
-		
-		
-		
-		
+//		List<PhoneEntity> userPhones = new ArrayList<>();
+//		phones.forEach(phone -> {
+//			String phoneNamber = phone.getMobileOne();
+//			
+//			phNambers.add(phoneNamber);
+//		});
+//		
+
 		infoDTO.setAccountTypeName(accountTypeEntity.getAccountTypeName());
-		infoDTO.setLocations(locNames);
-		infoDTO.setPhones(phNambers);
+		infoDTO.setLocations(locations);
+		infoDTO.setPhones(phones);
 		infoDTO.setActive(shopEntity.getActive());
 		infoDTO.setDeliveryNoDelivery(shopEntity.getDeliveryNoDelivery());
 		infoDTO.setFacbookLink(appUserEntity.getFacbookLink());
 		infoDTO.setMobile(appUserEntity.getUserMobile());
 		infoDTO.setName(appUserEntity.getName());
-		
-		
-		return shopRepository.findByUserId(userId);
+
+		ReturnedResultModel r = HelperResultUtil.fillResultModel("profile returned successfully", "no error",
+				HttpStatus.OK, infoDTO);
+
+		return r;
 
 	}
 

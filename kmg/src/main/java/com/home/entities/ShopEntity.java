@@ -187,6 +187,7 @@ public class ShopEntity{
 	}
 
 	@JsonIgnore
+	//@ManyToOne(fetch = FetchType.LAZY)
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "phone_id", referencedColumnName = "id", insertable = false, updatable = false)
 	public PhoneEntity getPhoneByPhoneId() {

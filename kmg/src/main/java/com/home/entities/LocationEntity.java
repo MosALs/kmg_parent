@@ -1,7 +1,7 @@
 package com.home.entities;
 
+import java.io.Serializable;
 import java.util.Collection;
-import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,35 +15,38 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+@JsonIgnoreProperties(value = { "hibernateLazyInitializer", "handler", "fieldHandler" })
 @Entity
 @Table(name = "location", schema = "dbo", catalog = "kmgnew")
-public class LocationEntity {
-    private int id;
-    private String locationName;
+public class LocationEntity implements Serializable {
+	private static final long serialVersionUID = 1L;
+	private int id;
+	private String locationName;
 //    private Integer areaId;
-    private AreasEntity areasByAreaId;
-    private Collection<ShopEntity> shopsById;
+	private AreasEntity areasByAreaId;
+	private Collection<ShopEntity> shopsById;
 
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public int getId() {
-        return id;
-    }
+	@Id
+	@Column(name = "id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	public int getId() {
+		return id;
+	}
 
-    public void setId(int id) {
-        this.id = id;
-    }
+	public void setId(int id) {
+		this.id = id;
+	}
 
-    @Column(name = "location_name")
-    public String getLocationName() {
-        return locationName;
-    }
+	@Column(name = "location_name")
+	public String getLocationName() {
+		return locationName;
+	}
 
-    public void setLocationName(String locationName) {
-        this.locationName = locationName;
-    }
+	public void setLocationName(String locationName) {
+		this.locationName = locationName;
+	}
 
 //    @Column(name = "area_id")
 //    public Integer getAreaId() {
@@ -69,24 +72,24 @@ public class LocationEntity {
 //        return Objects.hash(id, locationName, areaId);
 //    }
 
-    @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "area_id" , updatable= true,insertable = true)
-    public AreasEntity getAreasByAreaId() {
-        return areasByAreaId;
-    }
+	@JsonIgnore
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "area_id", updatable = true, insertable = true)
+	public AreasEntity getAreasByAreaId() {
+		return areasByAreaId;
+	}
 
-    public void setAreasByAreaId(AreasEntity areasByAreaId) {
-        this.areasByAreaId = areasByAreaId;
-    }
+	public void setAreasByAreaId(AreasEntity areasByAreaId) {
+		this.areasByAreaId = areasByAreaId;
+	}
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "locationByLocationId" , fetch = FetchType.LAZY)
-    public Collection<ShopEntity> getShopsById() {
-        return shopsById;
-    }
+	@JsonIgnore
+	@OneToMany(mappedBy = "locationByLocationId", fetch = FetchType.LAZY)
+	public Collection<ShopEntity> getShopsById() {
+		return shopsById;
+	}
 
-    public void setShopsById(Collection<ShopEntity> shopsById) {
-        this.shopsById = shopsById;
-    }
+	public void setShopsById(Collection<ShopEntity> shopsById) {
+		this.shopsById = shopsById;
+	}
 }
