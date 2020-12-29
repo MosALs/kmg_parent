@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+  <persistence-unit name="com.home_kmg_war_0.0.1-SNAPSHOTPU" transaction-type="RESOURCE_LOCAL">
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <class>com.home.Entity.Address</class>
+    <class>com.home.Entity.AppUser</class>
+    <class>com.home.Entity.Areas</class>
+    <class>com.home.Entity.Countries</class>
+    <class>com.home.Entity.Governorates</class>
+    <class>com.home.Entity.Ranking</class>
+    <class>com.home.Entity.Specialization</class>
+    <class>com.home.Entity.Sysdiagrams</class>
+    <class>com.home.View.UserSearchView</class>
+    <class>com.home.entities.AccountTypeEntity</class>
+    <class>com.home.entities.AppUserEntity</class>
+    <class>com.home.entities.AreasEntity</class>
+    <class>com.home.entities.CountriesEntity</class>
+    <class>com.home.entities.GovernoratEntity</class>
+    <class>com.home.entities.LocationEntity</class>
+    <class>com.home.entities.ManufacturerEntity</class>
+    <class>com.home.entities.PhoneEntity</class>
+    <class>com.home.entities.ProductEntity</class>
+    <class>com.home.entities.ProductTransactionEntity</class>
+    <class>com.home.entities.ShopEntity</class>
+    <class>com.home.entities.ShopProductEntity</class>
+    <class>com.home.entities.SpecializationEntity</class>
+    <class>com.home.entities.UserRoleEntity</class>
+    <class>com.home.entities.WorkOrderEntity</class>
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <properties>
+      <property name="javax.persistence.jdbc.url" value="jdbc:sqlserver://;databaseName=kmg"/>
+      <property name="javax.persistence.jdbc.user" value="test"/>
+      <property name="javax.persistence.jdbc.driver" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
+      <property name="javax.persistence.jdbc.password" value="rootsql"/>
+    </properties>
+  </persistence-unit>
+</persistence>

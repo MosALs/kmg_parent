@@ -1,0 +1,16 @@
+
+bin/
+
+.settings/
+
+Image_Module/.mvn/
+
+.project
+
+.metadata/.plugins/org.eclipse.m2e.logback.configuration/
+
+.metadata/
+pom_REMOTE_393.xml
+pom_LOCAL_393.xml
+pom_BASE_393.xml
+pom_BACKUP_393.xml
