@@ -8,5 +8,7 @@ public class HelperResultUtil {
 		ReturnedResultModel r = new ReturnedResultModel(message, error, status, result);
 		return r;
 	}
+	
+	
 
 }

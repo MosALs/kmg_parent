@@ -25,6 +25,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.home.DTO.DetailedSearchDTO;
+import com.home.DTO.RegisterationDto;
 import com.home.DTO.SearchCriteriaDto;
 import com.home.DTO.UserRegisterationDto;
 import com.home.Entity.Address;
@@ -37,9 +38,11 @@ import com.home.Repository.PhoneRepository;
 import com.home.Repository.ShopRepository;
 import com.home.Repository.SpecializationRepository;
 import com.home.Repository.UserRoleRepository;
+import com.home.config.BeansConfigurationHelper;
 import com.home.entities.AccountTypeEntity;
 import com.home.entities.AppUserEntity;
 import com.home.entities.AreasEntity;
+import com.home.entities.GovernoratEntity;
 import com.home.entities.LocationEntity;
 import com.home.entities.PhoneEntity;
 import com.home.entities.ShopEntity;
@@ -47,11 +50,18 @@ import com.home.entities.SpecializationEntity;
 import com.home.entities.UserRoleEntity;
 import com.home.security.Util.JwtUtil;
 import com.home.security.model.CustomUserDetails;
+import com.home.util.HelperValidationUtil;
 import com.home.util.ReturnedResultModel;
 
 @Service
 public class AppUserServiceImp implements AppUserService {
 
+	@Autowired
+	private BeansConfigurationHelper beansConfig;
+	
+	@Autowired
+	private ReturnedResultModel returnedResultModel;
+	
 	@Autowired
 	AppUserRepository appUsersRepository;
 
@@ -121,7 +131,7 @@ public class AppUserServiceImp implements AppUserService {
 
 	private String validateUserName(String userName) {
 		if (userName.startsWith("01")) {
-			// this is mobile number 
+			// this is mobile number
 			if (userName.length() != 11) {
 				return "Username should be correct number with length 11 number";
 
@@ -371,29 +381,44 @@ public class AppUserServiceImp implements AppUserService {
 
 	@Override
 	public AppUserEntity getUserById(int id) {
-		
+
 		return appUsersRepository.findById(id);
 	}
 
-	/*
-	 * @Override public ResponseEntity<?> add(UserRegisterationDto dto) {
-	 * AppUserEntity appUserEntity = dto.getAppUserEntity(); if (appUserEntity !=
-	 * null) { if (appUserEntity.getPassword().length() < 8) { throw new
-	 * ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
-	 * "Please enter the secret number 8"); }
-	 * 
-	 * if (appUserEntity.getUserMobile().length() < 11) { throw new
-	 * ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
-	 * "Please enter the phone number"); }
-	 * 
-	 * appUserEntity = appUsersRepository.save(appUserEntity); } return null;
-	 * 
-	 * }
-	 */
+	@Override
+	public ReturnedResultModel register(RegisterationDto registerationDto) {
+		String emptyFields = HelperValidationUtil.validateDTO(registerationDto);
+		if(!emptyFields.isEmpty()) {
+			returnedResultModel.setError("You should Enter this fields"+ emptyFields);
+			return returnedResultModel;
+		}
+		AppUserEntity appUserEntity = new AppUserEntity();
+		appUserEntity.setPassword(registerationDto.getPassword());
+		appUserEntity.setUserMobile(registerationDto.getMobile());
+		appUserEntity.setName(registerationDto.getFirst_name() + " " + registerationDto.getLast_name());
+		appUserEntity.setUserName(registerationDto.getEmail());
+		appUserEntity.setUserGender(registerationDto.getGender());
+		UserRoleEntity role = userRoleRepository.findByUserRoleName(registerationDto.getAccount_type());
+		appUserEntity.setUserRoleByUserRoleId(role);
+		appUserEntity =  appUsersRepository.save(appUserEntity);
+		
+		String areaName = registerationDto.getArea();
+		AreasEntity areasEntity = areasRepository.findByAreaName(areaName);
+		LocationEntity location = new LocationEntity();
+		location.setLocationName(registerationDto.getExact_loaction());
+		location.setAreasByAreaId(areasEntity);
+		location = locationRepository.save(location);
 
-	/*
-	 * @Override public int saveone(AppUserEntity appUserEntity) { // TODO
-	 * Auto-generated method stub appUsersRepository.save(appUserEntity); return 0;
-	 * }
-	 */
+		AccountTypeEntity account = accountTypeRepository.findByAccountTypeName(registerationDto.getAccount_type());
+
+		ShopEntity shop = new ShopEntity();
+		shop.setAppUserByUserId(appUserEntity);
+		shop.setLocationByLocationId(location);
+		shop.setAccountTypeByAccountTypeId(account);
+		shop = shopRepository.save(shop);
+		returnedResultModel.setMessage("User Registerd Successfully");
+		return returnedResultModel;
+	
+	}
+
 }

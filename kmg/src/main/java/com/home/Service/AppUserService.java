@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.home.DTO.DetailedSearchDTO;
+import com.home.DTO.RegisterationDto;
 import com.home.DTO.SearchCriteriaDto;
 import com.home.DTO.SearchResultDTO;
 import com.home.DTO.UserProfileFullInfoDTO;
@@ -21,6 +22,7 @@ public interface AppUserService {
 
 	AppUserEntity getUserById(int id);
 	ReturnedResultModel save(UserRegisterationDto appUser);
+	ReturnedResultModel register(RegisterationDto registerationDto);
 
 
 	List<AppUser> searchAll(String areaName, String accountType, String specializationName, String governoratName);

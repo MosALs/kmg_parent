@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.home.DTO.RegisterationDto;
 import com.home.DTO.UserRegisterationDto;
 import com.home.Service.AppUserService;
 import com.home.entities.AppUserEntity;
@@ -92,6 +93,12 @@ public class AppUserController {
 			r.setMessage("Failed");
 			return ResponseEntity.status(r.getStatus()).body(r);
 		}
+	}
+	@PostMapping(value = "/register")
+	public ResponseEntity<?> add (@RequestBody RegisterationDto rdto){
+		ReturnedResultModel r = userService.register(rdto);
+		return ResponseEntity.ok(r);
+		
 	}
 	
 	

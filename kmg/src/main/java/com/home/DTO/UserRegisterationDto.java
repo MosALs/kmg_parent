@@ -87,20 +87,4 @@ public class UserRegisterationDto {
 		this.phoneEntity = phoneEntity;
 	}
 	
-	
-	
-
-	/*
-	 * private Address address ; private Specialization specialization; private
-	 * AppUser appUser; public AppUser getAppUser() { return appUser; } public void
-	 * setUser(AppUser appUser) { this.appUser = appUser; } public Address
-	 * getAddress() { return address; } public void setAddress(Address address) {
-	 * this.address =address; }
-	 * 
-	 * public Specialization getSpecialization() { return specialization; }
-	 * 
-	 * public void setSpecialization(Specialization specialization) {
-	 * this.specialization = specialization; }
-	 */
-
 }
