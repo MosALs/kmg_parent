@@ -101,11 +101,14 @@ public class ShopServiceImp implements ShopService {
 
 	@Override
 	public ReturnedResultModel getByUserId(int userId) throws NotFoundException {
+
 		UserProfileFullInfoDTO infoDTO = new UserProfileFullInfoDTO();
 
 		List<LocationEntity> locations = new ArrayList<LocationEntity>();
-		
+
 		List<PhoneEntity> phones = new ArrayList<PhoneEntity>();
+
+		List<SpecializationEntity> specializations = new ArrayList<SpecializationEntity>();
 
 		List<ShopEntity> shops = shopRepository.findByUserId(userId);
 		if (shops == null || shops.size() == 0) {
@@ -114,18 +117,17 @@ public class ShopServiceImp implements ShopService {
 		}
 		// user is worker or client.
 		ShopEntity shopEntity = shops.get(0);
-		
+
 		int usersId = shopEntity.getUserId();
 		System.out.println("usersId: " + usersId);
 		AppUserEntity appUserEntity = appUserService.getUserById(userId);
 
-		if(shopEntity.getLocationId() !=null) {
+		if (shopEntity.getLocationId() != null) {
 			int locationId = shopEntity.getLocationId();
 			System.out.println("locationId: " + locationId);
 			LocationEntity locationEntity = locationService.getByLocationID(locationId);
 			locations.add(locationEntity);
 		}
-		
 
 		int accountTypeId = shopEntity.getAccountTypeId();
 		System.out.println("acccountTypeId: " + accountTypeId);
@@ -136,12 +138,18 @@ public class ShopServiceImp implements ShopService {
 		PhoneEntity phoneEntity = phoneService.getPhoneById(phoneId);
 		phones.add(phoneEntity);
 
-		if (!accountTypeEntity.getAccountTypeName().equals("عميل")) {
-			int specializationId = shopEntity.getSpecializationId();
-			System.out.println("specializationId: " + specializationId);
-			SpecializationEntity specializationEntity = specializationService.getBySpecializationID(specializationId);
+		int specializationId = shopEntity.getSpecializationId();
+		System.out.println("specializationId: " + specializationId);
+		SpecializationEntity specializationEntity = specializationService.getBySpecializationID(specializationId);
+		// specializations.add(specializationEntity);
 
-			
+		Boolean notClient = true;
+		if (!accountTypeEntity.getAccountTypeName().equals("عميل")) {
+			notClient =  false;
+//			int specializationId = shopEntity.getSpecializationId();
+//			System.out.println("specializationId: " + specializationId);
+//			SpecializationEntity specializationEntity = specializationService.getBySpecializationID(specializationId);
+
 		}
 
 		if (shops.size() > 1) {
@@ -150,42 +158,31 @@ public class ShopServiceImp implements ShopService {
 
 			for (int i = 0; i < shops.size(); i++) {
 				if (i > 0) {
+					if (notClient) {
+						int speId = shops.get(i).getSpecializationId();
+						SpecializationEntity specializationEn = specializationService.getBySpecializationID(speId);
+						specializations.add(specializationEn);
+					}
+
 					int locId = shops.get(i).getLocationId();
 					System.out.println("locationId: " + locId);
 					LocationEntity locEntity = locationService.getByLocationID(locId);
 					locations.add(locEntity);
-					
+
 					int phonId = shops.get(i).getPhoneId();
 					System.out.println("phonId: " + phonId);
 					PhoneEntity phonEntit = phoneService.getPhoneById(phoneId);
 					phones.add(phonEntit);
+
 				}
 			}
 		}
-//		List<String> locNames = new ArrayList<>();
-//		locations.forEach(location -> {
-//			String locName = location.getLocationName();
-//			locNames.add(locName);
-//		});
-//		
-//		List<String> phNambers = new ArrayList<>();
-//		phones.forEach(phone -> {
-//			String phoneNamber = phone.getMobileOne();
-//			
-//			phNambers.add(phoneNamber);
-//		});
-		
-//		List<PhoneEntity> userPhones = new ArrayList<>();
-//		phones.forEach(phone -> {
-//			String phoneNamber = phone.getMobileOne();
-//			
-//			phNambers.add(phoneNamber);
-//		});
-//		
 
 		infoDTO.setAccountTypeName(accountTypeEntity.getAccountTypeName());
 		infoDTO.setLocations(locations);
 		infoDTO.setPhones(phones);
+		infoDTO.setSpecialization(specializations);
+//		infoDTO.setSpecialization(specializations);
 		infoDTO.setActive(shopEntity.getActive());
 		infoDTO.setDeliveryNoDelivery(shopEntity.getDeliveryNoDelivery());
 		infoDTO.setFacbookLink(appUserEntity.getFacbookLink());
@@ -200,3 +197,24 @@ public class ShopServiceImp implements ShopService {
 	}
 
 }
+
+//List<String> locNames = new ArrayList<>();
+//locations.forEach(location -> {
+//	String locName = location.getLocationName();
+//	locNames.add(locName);
+//});
+//
+//List<String> phNambers = new ArrayList<>();
+//phones.forEach(phone -> {
+//	String phoneNamber = phone.getMobileOne();
+//	
+//	phNambers.add(phoneNamber);
+//});
+
+//List<PhoneEntity> userPhones = new ArrayList<>();
+//phones.forEach(phone -> {
+//	String phoneNamber = phone.getMobileOne();
+//	
+//	phNambers.add(phoneNamber);
+//});
+//

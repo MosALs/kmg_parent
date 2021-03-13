@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.home.entities.LocationEntity;
 import com.home.entities.PhoneEntity;
+import com.home.entities.SpecializationEntity;
 
 public class UserProfileFullInfoDTO {
 
@@ -15,7 +16,7 @@ public class UserProfileFullInfoDTO {
 	private String facbookLink;
 	private String password;
 	private String locationName;
-	private String specializationName;
+//	private String specializationName;
 	private String accountTypeName;
 	private String shopName;
 	private String street;
@@ -32,6 +33,7 @@ public class UserProfileFullInfoDTO {
 	private String landLineThree;
 	private List<LocationEntity> Locations;
 	private List<PhoneEntity> phones;
+	private  List <SpecializationEntity>specialization;
 	
 
 	public String getName() {
@@ -90,13 +92,13 @@ public class UserProfileFullInfoDTO {
 		this.locationName = locationName;
 	}
 
-	public String getSpecializationName() {
-		return specializationName;
-	}
-
-	public void setSpecializationName(String specializationName) {
-		this.specializationName = specializationName;
-	}
+//	public String getSpecializationName() {
+//		return specializationName;
+//	}
+//
+//	public void setSpecializationName(String specializationName) {
+//		this.specializationName = specializationName;
+//	}
 
 	public String getAccountTypeName() {
 		return accountTypeName;
@@ -225,6 +227,14 @@ public class UserProfileFullInfoDTO {
 
 	public void setPhones(List<PhoneEntity> phones) {
 		this.phones = phones;
+	}
+
+	public List<SpecializationEntity> getSpecialization() {
+		return specialization;
+	}
+
+	public void setSpecialization(List<SpecializationEntity> specialization) {
+		this.specialization = specialization;
 	}
 
 	

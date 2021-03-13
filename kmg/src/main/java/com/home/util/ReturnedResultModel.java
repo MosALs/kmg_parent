@@ -1,7 +1,5 @@
 package com.home.util;
 
-import java.util.Objects;
-
 import org.springframework.http.HttpStatus;
 
 public class ReturnedResultModel {

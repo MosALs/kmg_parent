@@ -20,7 +20,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -42,7 +41,6 @@ import com.home.config.BeansConfigurationHelper;
 import com.home.entities.AccountTypeEntity;
 import com.home.entities.AppUserEntity;
 import com.home.entities.AreasEntity;
-import com.home.entities.GovernoratEntity;
 import com.home.entities.LocationEntity;
 import com.home.entities.PhoneEntity;
 import com.home.entities.ShopEntity;
@@ -58,10 +56,10 @@ public class AppUserServiceImp implements AppUserService {
 
 	@Autowired
 	private BeansConfigurationHelper beansConfig;
-	
+
 	@Autowired
 	private ReturnedResultModel returnedResultModel;
-	
+
 	@Autowired
 	AppUserRepository appUsersRepository;
 
@@ -387,38 +385,52 @@ public class AppUserServiceImp implements AppUserService {
 
 	@Override
 	public ReturnedResultModel register(RegisterationDto registerationDto) {
-		String emptyFields = HelperValidationUtil.validateDTO(registerationDto);
-		if(!emptyFields.isEmpty()) {
-			returnedResultModel.setError("You should Enter this fields"+ emptyFields);
+		try {
+			String emptyFields = HelperValidationUtil.validateDTO(registerationDto);
+
+			if (!emptyFields.isEmpty()) {
+				// fix this word in the string to these
+				returnedResultModel.setError("You should Enter these fields" + " " + emptyFields);
+				return returnedResultModel;
+			}
+			AppUserEntity appUserEntity = new AppUserEntity();
+			appUserEntity.setPassword(registerationDto.getPassword());
+			appUserEntity.setUserMobile(registerationDto.getMobile());
+			appUserEntity.setName(registerationDto.getFirst_name() + " " + registerationDto.getLast_name());
+			appUserEntity.setUserName(registerationDto.getEmail());
+			appUserEntity.setUserGender(registerationDto.getGender());
+			UserRoleEntity role = userRoleRepository.findByUserRoleName(registerationDto.getAccount_type());
+			appUserEntity.setUserRoleByUserRoleId(role);
+			appUserEntity = appUsersRepository.save(appUserEntity);
+
+			String areaName = registerationDto.getArea();
+			AreasEntity areasEntity = null;
+			// need to check if area is not null to complete this process
+			if(areaName != null) {
+				areasEntity = areasRepository.findByAreaName(areaName);				
+			}
+			LocationEntity location = new LocationEntity();
+			location.setLocationName(registerationDto.getExact_loaction());
+			location.setAreasByAreaId(areasEntity);
+			location = locationRepository.save(location);
+
+			AccountTypeEntity account = accountTypeRepository.findByAccountTypeName(registerationDto.getAccount_type());
+
+			ShopEntity shop = new ShopEntity();
+			shop.setAppUserByUserId(appUserEntity);
+			shop.setLocationByLocationId(location);
+			shop.setAccountTypeByAccountTypeId(account);
+			shop = shopRepository.save(shop);
+			returnedResultModel.setMessage("User Registerd Successfully");
+			return returnedResultModel;
+		} catch (Exception e) {
+			returnedResultModel.setError(e.getMessage());
+			returnedResultModel.setError("Register Failed ..");
+			returnedResultModel.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+			returnedResultModel.setResult(null);
 			return returnedResultModel;
 		}
-		AppUserEntity appUserEntity = new AppUserEntity();
-		appUserEntity.setPassword(registerationDto.getPassword());
-		appUserEntity.setUserMobile(registerationDto.getMobile());
-		appUserEntity.setName(registerationDto.getFirst_name() + " " + registerationDto.getLast_name());
-		appUserEntity.setUserName(registerationDto.getEmail());
-		appUserEntity.setUserGender(registerationDto.getGender());
-		UserRoleEntity role = userRoleRepository.findByUserRoleName(registerationDto.getAccount_type());
-		appUserEntity.setUserRoleByUserRoleId(role);
-		appUserEntity =  appUsersRepository.save(appUserEntity);
-		
-		String areaName = registerationDto.getArea();
-		AreasEntity areasEntity = areasRepository.findByAreaName(areaName);
-		LocationEntity location = new LocationEntity();
-		location.setLocationName(registerationDto.getExact_loaction());
-		location.setAreasByAreaId(areasEntity);
-		location = locationRepository.save(location);
 
-		AccountTypeEntity account = accountTypeRepository.findByAccountTypeName(registerationDto.getAccount_type());
-
-		ShopEntity shop = new ShopEntity();
-		shop.setAppUserByUserId(appUserEntity);
-		shop.setLocationByLocationId(location);
-		shop.setAccountTypeByAccountTypeId(account);
-		shop = shopRepository.save(shop);
-		returnedResultModel.setMessage("User Registerd Successfully");
-		return returnedResultModel;
-	
 	}
 
 }
