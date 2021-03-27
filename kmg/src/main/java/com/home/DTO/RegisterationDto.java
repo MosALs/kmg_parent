@@ -2,7 +2,7 @@ package com.home.DTO;
 
 public class RegisterationDto {
 	private int id;
-	private  String first_name,last_name,mobile,gender,email,password,country,gov,area,exact_loaction,account_type,avatar;
+	private  String first_name,last_name,mobile,gender,email,password,confirmPassword,country,gov,area,address,account_type,avatar;
 	public int getId() {
 		return id;
 	}
@@ -45,6 +45,13 @@ public class RegisterationDto {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	
+	public String getConfirmPassword() {
+		return confirmPassword;
+	}
+	public void setConfirmPassword(String confirmPassword) {
+		this.confirmPassword = confirmPassword;
+	}
 	public String getCountry() {
 		return country;
 	}
@@ -63,11 +70,13 @@ public class RegisterationDto {
 	public void setArea(String area) {
 		this.area = area;
 	}
-	public String getExact_loaction() {
-		return exact_loaction;
+	
+	
+	public String getAddress() {
+		return address;
 	}
-	public void setExact_loaction(String exact_loaction) {
-		this.exact_loaction = exact_loaction;
+	public void setAddress(String address) {
+		this.address = address;
 	}
 	public String getAccount_type() {
 		return account_type;
@@ -82,7 +91,7 @@ public class RegisterationDto {
 		this.avatar = avatar;
 	}
 	public RegisterationDto(int id, String first_name, String last_name, String mobile, String gender, String email,
-			String password, String country, String gov, String area, String exact_loaction, String account_type,
+			String password, String country, String gov, String area, String address, String account_type,
 			String avatar) {
 		super();
 		this.id = id;
@@ -95,7 +104,7 @@ public class RegisterationDto {
 		this.country = country;
 		this.gov = gov;
 		this.area = area;
-		this.exact_loaction = exact_loaction;
+		this.address = address;
 		this.account_type = account_type;
 		this.avatar = avatar;
 	}

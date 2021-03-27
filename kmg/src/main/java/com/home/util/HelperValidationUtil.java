@@ -16,22 +16,25 @@ public class HelperValidationUtil {
 			builder.append(message);
 		}
 		if (dto.getAccount_type() == null || dto.getAccount_type().isEmpty()) {
-			message = "account type, ";
+			message = "Account Type , ";
 			builder.append(message);
 		}
 		if (dto.getPassword() == null || dto.getPassword().isEmpty()) {
 			message = "Password, ";
 			builder.append(message);
 		}
+		if (dto.getConfirmPassword() == null || dto.getConfirmPassword().isEmpty()) {
+			message = "Confirm Password, ";
+			builder.append(message);
+		}
 		if (dto.getEmail() == null || dto.getEmail().isEmpty()) {
 			message = "Email , ";
 			builder.append(message);
 		}
-		if(dto.getExact_loaction()==null||dto.getExact_loaction().isEmpty()) {
-			message = "Location  , ";
+		if(dto.getAddress()==null||dto.getAddress().isEmpty()) {
+			message = "Address  , ";
 			builder.append(message);
 		}
-
 		return builder.toString();
 	}
 
