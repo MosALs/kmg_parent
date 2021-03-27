@@ -255,7 +255,7 @@ public class AppUserServiceImp implements AppUserService {
 
 							}
 
-							shopEntity.setUserId(appUserEntity.getId());
+//							shopEntity.setUserId(appUserEntity.getId());
 							shopEntity.setAccountTypeId(accountTypeEntity.getId());
 							// shopEntity.setSpecializationId(specializationEntity.getId());
 							shopEntity.setLocationId(locationEntity.getId());
@@ -393,6 +393,7 @@ public class AppUserServiceImp implements AppUserService {
 				returnedResultModel.setError("You should Enter these fields" + " " + emptyFields);
 				return returnedResultModel;
 			}
+			ShopEntity shop = new ShopEntity();
 			AppUserEntity appUserEntity = new AppUserEntity();
 			appUserEntity.setPassword(registerationDto.getPassword());
 			appUserEntity.setUserMobile(registerationDto.getMobile());
@@ -401,25 +402,29 @@ public class AppUserServiceImp implements AppUserService {
 			appUserEntity.setUserGender(registerationDto.getGender());
 			UserRoleEntity role = userRoleRepository.findByUserRoleName(registerationDto.getAccount_type());
 			appUserEntity.setUserRoleByUserRoleId(role);
+			AccountTypeEntity account = accountTypeRepository.findByAccountTypeName(registerationDto.getAccount_type());
+
 			appUserEntity = appUsersRepository.save(appUserEntity);
+			shop = shopRepository.save(shop);
 
 			String areaName = registerationDto.getArea();
 			AreasEntity areasEntity = null;
 			// need to check if area is not null to complete this process
-			if(areaName != null) {
-				areasEntity = areasRepository.findByAreaName(areaName);				
+			if (areaName != null) {
+				areasEntity = areasRepository.findByAreaName(areaName);
 			}
 			LocationEntity location = new LocationEntity();
 			location.setLocationName(registerationDto.getExact_loaction());
 			location.setAreasByAreaId(areasEntity);
 			location = locationRepository.save(location);
+			shop = shopRepository.save(shop);
 
-			AccountTypeEntity account = accountTypeRepository.findByAccountTypeName(registerationDto.getAccount_type());
-
-			ShopEntity shop = new ShopEntity();
+		
+//			ShopEntity shop = new ShopEntity();
 			shop.setAppUserByUserId(appUserEntity);
-			shop.setLocationByLocationId(location);
 			shop.setAccountTypeByAccountTypeId(account);
+			shop.setLocationByLocationId(location);
+
 			shop = shopRepository.save(shop);
 			returnedResultModel.setMessage("User Registerd Successfully");
 			return returnedResultModel;

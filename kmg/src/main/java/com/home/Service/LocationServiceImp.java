@@ -2,6 +2,7 @@ package com.home.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -96,6 +97,12 @@ public class LocationServiceImp implements LocationService {
 	public List<LocationEntity> getName() {
 		
 		return locationRepository.findAllName();
+	}
+
+	@Override
+	public List<LocationEntity> getAllLocationIn(Set<Integer> locationIds) {
+		
+		return locationRepository.findAllIn(locationIds);
 	}
 
 }

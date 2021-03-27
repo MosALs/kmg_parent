@@ -1,7 +1,9 @@
 package com.home.Service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -145,44 +147,38 @@ public class ShopServiceImp implements ShopService {
 
 		Boolean notClient = true;
 		if (!accountTypeEntity.getAccountTypeName().equals("عميل")) {
-			notClient =  false;
-//			int specializationId = shopEntity.getSpecializationId();
-//			System.out.println("specializationId: " + specializationId);
-//			SpecializationEntity specializationEntity = specializationService.getBySpecializationID(specializationId);
+			notClient = false;
 
 		}
 
+		//checked for rebate
 		if (shops.size() > 1) {
-			// create list of locati oentity and list of phone entity and fill them with all
-			// objects .
-
-			for (int i = 0; i < shops.size(); i++) {
-				if (i > 0) {
-					if (notClient) {
-						int speId = shops.get(i).getSpecializationId();
-						SpecializationEntity specializationEn = specializationService.getBySpecializationID(speId);
-						specializations.add(specializationEn);
+			Set<Integer> specIds = new HashSet<>();
+			Set<Integer> locationIds = new HashSet<>();
+			Set<Integer> phoneIds = new HashSet<>();
+			for (int i = 1; i < shops.size(); i++) {
+				if (notClient) {
+					if (shops.get(0).getSpecializationId() != shops.get(i).getSpecializationId()) {
+						specIds.add(shops.get(i).getSpecializationId());
 					}
+				}
 
-					int locId = shops.get(i).getLocationId();
-					System.out.println("locationId: " + locId);
-					LocationEntity locEntity = locationService.getByLocationID(locId);
-					locations.add(locEntity);
-
-					int phonId = shops.get(i).getPhoneId();
-					System.out.println("phonId: " + phonId);
-					PhoneEntity phonEntit = phoneService.getPhoneById(phoneId);
-					phones.add(phonEntit);
-
+				if (shops.get(0).getLocationId() != shops.get(i).getLocationId()) {
+					locationIds.add(shops.get(i).getLocationId());
+				}
+				if (shops.get(0).getPhoneId() != shops.get(i).getPhoneId()) {
+					phoneIds.add(shops.get(i).getPhoneId());
 				}
 			}
+			specializations = specializationService.getAllspecializationIn(specIds);
+			locations = locationService.getAllLocationIn(locationIds);
+			phones = phoneService.geAllPhoneIn(phoneIds);
 		}
 
 		infoDTO.setAccountTypeName(accountTypeEntity.getAccountTypeName());
 		infoDTO.setLocations(locations);
 		infoDTO.setPhones(phones);
 		infoDTO.setSpecialization(specializations);
-//		infoDTO.setSpecialization(specializations);
 		infoDTO.setActive(shopEntity.getActive());
 		infoDTO.setDeliveryNoDelivery(shopEntity.getDeliveryNoDelivery());
 		infoDTO.setFacbookLink(appUserEntity.getFacbookLink());
@@ -218,3 +214,34 @@ public class ShopServiceImp implements ShopService {
 //	phNambers.add(phoneNamber);
 //});
 //
+
+//if (shops.size() > 1) {
+//// create list of locati oentity and list of phone entity and fill them with all
+//// objects .
+//
+//for (int i = 1; i < shops.size(); i++) {
+//	if (notClient) {
+//		if (shops.get(i).getSpecializationId() != shops.get(i + 1).getSpecializationId()) {
+//			int speId = shops.get(i).getSpecializationId();
+//			SpecializationEntity specializationEn = specializationService.getBySpecializationID(speId);
+//			specializations.add(specializationEn);
+//		}
+//	}
+//	if (shops.get(0).getLocationId() != shops.get(i).getLocationId()) {
+//		int locId = shops.get(i).getLocationId();
+//		System.out.println("locationId: " + locId);
+//		LocationEntity locEntity = locationService.getByLocationID(locId);
+//		locations.add(locEntity);
+//	}
+//	if (shops.get(0).getPhoneId() != shops.get(i).getPhoneId()) {
+//		int phonId = shops.get(i).getPhoneId();
+//		System.out.println("phonId: " + phonId);
+//		PhoneEntity phonEntit = phoneService.getPhoneById(phoneId);
+//		phones.add(phonEntit);
+//	}
+//}
+//}
+
+//int specializationId = shopEntity.getSpecializationId();
+//System.out.println("specializationId: " + specializationId);
+//SpecializationEntity specializationEntity = specializationService.getBySpecializationID(specializationId);

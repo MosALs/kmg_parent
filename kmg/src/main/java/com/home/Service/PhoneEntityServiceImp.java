@@ -1,6 +1,8 @@
 package com.home.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,6 +27,12 @@ public class PhoneEntityServiceImp implements PhoneEntityService{
 		Optional<PhoneEntity> optional=phoneRepository.findById(id);
 		PhoneEntity phoneEntity=optional.get();
 		return phoneEntity;
+	}
+
+	@Override
+	public List<PhoneEntity> geAllPhoneIn(Set<Integer> phoneIds) {
+	
+		return phoneRepository.findAllIn(phoneIds);
 	}
 	
 	

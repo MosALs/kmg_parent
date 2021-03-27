@@ -1,6 +1,7 @@
 package com.home.Service;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.stereotype.Service;
 
@@ -38,6 +39,9 @@ public interface LocationService {
 	List <SearchGetAll> searchAllALLtest();
 	
 	List<LocationEntity> getName();
+
+	List<LocationEntity> getAllLocationIn(Set<Integer> locationIds);
+
 	
 	
 	

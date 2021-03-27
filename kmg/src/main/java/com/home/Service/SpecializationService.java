@@ -1,6 +1,7 @@
 package com.home.Service;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,8 @@ public interface SpecializationService {
 	int deleteBySpecializationID(int id);
 
 	int ModifyBySpecializationName(String newspecializationName, String oldspecializationName);
+
+	List<SpecializationEntity> getAllspecializationIn(Set<Integer> specIds);
 
 
 }

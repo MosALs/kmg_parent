@@ -1,5 +1,8 @@
 package com.home.Repository;
 
+import java.util.List;
+import java.util.Set;
+
 import javax.transaction.Transactional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -21,6 +24,9 @@ public interface SpecializationRepository extends JpaRepository<SpecializationEn
 
 	SpecializationEntity findBySpecializationName(String specializationName);
 	SpecializationEntity findById(int id);
+
+	@Query(value = "select s from SpecializationEntity s where s.id in :specIds")
+	List<SpecializationEntity> findAllIn(Set<Integer> specIds);
 
 	
 

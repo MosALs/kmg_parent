@@ -1,6 +1,7 @@
 package com.home.Repository;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.transaction.Transactional;
 
@@ -96,6 +97,9 @@ public interface LocationRepository extends JpaRepository<LocationEntity, Intege
 	@Query(value = "select l.locationName\r\n" +
 	"from LocationEntity l")
 	List<LocationEntity> findAllName();
+
+	@Query(value="select l from LocationEntity l where l.id in :locationIds")
+	List<LocationEntity> findAllIn(Set<Integer> locationIds);
 	
 	
 	

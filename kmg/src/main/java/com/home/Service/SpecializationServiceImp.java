@@ -1,6 +1,7 @@
 package com.home.Service;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -49,6 +50,12 @@ public class SpecializationServiceImp implements SpecializationService {
 	public int ModifyBySpecializationName(String newspecializationName, String oldspecializationName) {
 	 specializationRepository.updateSpecialization(newspecializationName, oldspecializationName);
 		return 0;
+	}
+
+	@Override
+	public List<SpecializationEntity> getAllspecializationIn(Set<Integer> specIds) {
+		
+		return specializationRepository.findAllIn(specIds);
 	}
 
 
