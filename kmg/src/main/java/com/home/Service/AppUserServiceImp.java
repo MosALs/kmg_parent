@@ -394,13 +394,6 @@ public class AppUserServiceImp implements AppUserService {
 				returnedResultModel.setError("You should Enter these fields" + " " + emptyFields);
 				return returnedResultModel;
 			}
-			AppUserEntity appUserEntity = new AppUserEntity();
-			appUserEntity.setPassword(registerationDto.getPassword());
-			appUserEntity.setConfirmPassword(registerationDto.getConfirmPassword());
-			appUserEntity.setUserMobile(registerationDto.getMobile());
-			appUserEntity.setName(registerationDto.getFirst_name() + " " + registerationDto.getLast_name());
-			appUserEntity.setUserName(registerationDto.getEmail());
-			appUserEntity.setUserGender(registerationDto.getGender());
 			UserRoleEntity role = userRoleRepository.findByUserRoleName(registerationDto.getAccount_type());
 			if(role ==  null) {
 				returnedResultModel.setMessage("Register Failed ..");
@@ -409,7 +402,15 @@ public class AppUserServiceImp implements AppUserService {
 				returnedResultModel.setResult(null);
 				return returnedResultModel;
 			}
+			AppUserEntity appUserEntity = new AppUserEntity();
+			appUserEntity.setPassword(registerationDto.getPassword());
+			appUserEntity.setConfirmPassword(registerationDto.getConfirmPassword());
+			appUserEntity.setUserMobile(registerationDto.getMobile());
+			appUserEntity.setName(registerationDto.getFirst_name() + " " + registerationDto.getLast_name());
+			appUserEntity.setUserName(registerationDto.getEmail());
+			appUserEntity.setUserGender(registerationDto.getGender());
 			appUserEntity.setUserRoleByUserRoleId(role);
+			appUserEntity.setActive(true);
 			appUserEntity = appUsersRepository.save(appUserEntity);
 
 			String areaName = registerationDto.getArea();
@@ -430,7 +431,14 @@ public class AppUserServiceImp implements AppUserService {
 			shop.setLocationId(location.getId());
 			shop.setAccountTypeId(account.getId());
 			shop = shopRepository.save(shop);
+			
+			CustomUserDetails userDetails = new CustomUserDetails(appUserEntity);
+
+			String jwt = jwtUtil.generateToken(userDetails);
 			returnedResultModel.setMessage("User Registerd Successfully");
+			returnedResultModel.setResult(jwt);
+			returnedResultModel.setError("No Errors");
+			returnedResultModel.setStatus(HttpStatus.OK);
 			return returnedResultModel;
 		} catch (RuntimeException e) {
 			String message = e.getMessage();
