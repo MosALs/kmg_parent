@@ -17,7 +17,6 @@ import javax.persistence.criteria.Root;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -412,7 +411,6 @@ public class AppUserServiceImp implements AppUserService {
 			appUserEntity.setUserRoleByUserRoleId(role);
 			appUserEntity.setActive(true);
 			appUserEntity = appUsersRepository.save(appUserEntity);
-			shop = shopRepository.save(shop);
 
 			String areaName = registerationDto.getArea();
 			AreasEntity areasEntity = null;
@@ -424,8 +422,6 @@ public class AppUserServiceImp implements AppUserService {
 			location.setLocationName(registerationDto.getAddress());
 			location.setAreasByAreaId(areasEntity);
 			location = locationRepository.save(location);
-			shop = shopRepository.save(shop);
-
 			AccountTypeEntity account = accountTypeRepository.findByAccountTypeName(registerationDto.getAccount_type());
 
 			ShopEntity shop = new ShopEntity();
