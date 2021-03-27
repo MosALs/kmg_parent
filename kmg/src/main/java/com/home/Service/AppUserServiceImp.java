@@ -17,6 +17,7 @@ import javax.persistence.criteria.Root;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -393,17 +394,23 @@ public class AppUserServiceImp implements AppUserService {
 				returnedResultModel.setError("You should Enter these fields" + " " + emptyFields);
 				return returnedResultModel;
 			}
-			ShopEntity shop = new ShopEntity();
+			UserRoleEntity role = userRoleRepository.findByUserRoleName(registerationDto.getAccount_type());
+			if(role ==  null) {
+				returnedResultModel.setMessage("Register Failed ..");
+				returnedResultModel.setError("Entered User role not found in our records .. make sure you entered a correct account type which has a correct user role");
+				returnedResultModel.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+				returnedResultModel.setResult(null);
+				return returnedResultModel;
+			}
 			AppUserEntity appUserEntity = new AppUserEntity();
 			appUserEntity.setPassword(registerationDto.getPassword());
+			appUserEntity.setConfirmPassword(registerationDto.getConfirmPassword());
 			appUserEntity.setUserMobile(registerationDto.getMobile());
 			appUserEntity.setName(registerationDto.getFirst_name() + " " + registerationDto.getLast_name());
 			appUserEntity.setUserName(registerationDto.getEmail());
 			appUserEntity.setUserGender(registerationDto.getGender());
-			UserRoleEntity role = userRoleRepository.findByUserRoleName(registerationDto.getAccount_type());
 			appUserEntity.setUserRoleByUserRoleId(role);
-			AccountTypeEntity account = accountTypeRepository.findByAccountTypeName(registerationDto.getAccount_type());
-
+			appUserEntity.setActive(true);
 			appUserEntity = appUsersRepository.save(appUserEntity);
 			shop = shopRepository.save(shop);
 
@@ -414,23 +421,32 @@ public class AppUserServiceImp implements AppUserService {
 				areasEntity = areasRepository.findByAreaName(areaName);
 			}
 			LocationEntity location = new LocationEntity();
-			location.setLocationName(registerationDto.getExact_loaction());
+			location.setLocationName(registerationDto.getAddress());
 			location.setAreasByAreaId(areasEntity);
 			location = locationRepository.save(location);
 			shop = shopRepository.save(shop);
 
-		
-//			ShopEntity shop = new ShopEntity();
-			shop.setAppUserByUserId(appUserEntity);
-			shop.setAccountTypeByAccountTypeId(account);
-			shop.setLocationByLocationId(location);
+			AccountTypeEntity account = accountTypeRepository.findByAccountTypeName(registerationDto.getAccount_type());
 
+			ShopEntity shop = new ShopEntity();
+			shop.setUserId(appUserEntity.getId());
+			shop.setLocationId(location.getId());
+			shop.setAccountTypeId(account.getId());
 			shop = shopRepository.save(shop);
+			
+			CustomUserDetails userDetails = new CustomUserDetails(appUserEntity);
+
+			String jwt = jwtUtil.generateToken(userDetails);
 			returnedResultModel.setMessage("User Registerd Successfully");
+			returnedResultModel.setResult(jwt);
+			returnedResultModel.setError("No Errors");
+			returnedResultModel.setStatus(HttpStatus.OK);
 			return returnedResultModel;
-		} catch (Exception e) {
-			returnedResultModel.setError(e.getMessage());
-			returnedResultModel.setError("Register Failed ..");
+		} catch (RuntimeException e) {
+			String message = e.getMessage();
+			
+			returnedResultModel.setMessage("Register Failed ..");
+			returnedResultModel.setError(message);
 			returnedResultModel.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
 			returnedResultModel.setResult(null);
 			return returnedResultModel;

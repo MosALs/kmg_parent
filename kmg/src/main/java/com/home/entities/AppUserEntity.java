@@ -46,6 +46,8 @@ public class AppUserEntity {
 	@NotNull
 //	@Column(nullable = false)
 	private String password;
+	private String confirmPassword;
+	private Boolean active;
 //    @JsonView(View.AuthenticateInfo.class)
 //    private int userRoleId;
 	private String facbookLink;
@@ -145,15 +147,26 @@ public class AppUserEntity {
 		this.password = password;
 	}
 
-//    @Basic
-//    @Column(name = "user_role_id")
-//    public int getUserRoleId() {
-//        return userRoleId;
-//    }
-//
-//    public void setUserRoleId(int userRoleId) {
-//        this.userRoleId = userRoleId;
-//    }
+	@Basic
+	@Column(name = "confirm_password")
+	public String getConfirmPassword() {
+		return confirmPassword;
+	}
+	
+	public void setConfirmPassword(String confirmPassword) {
+		this.confirmPassword = confirmPassword;
+	}
+	
+
+	@Basic
+	@Column(name = "active")
+	public Boolean getActive() {
+		return active;
+	}
+
+	public void setActive(Boolean active) {
+		this.active = active;
+	}
 
 	@Basic
 	@Column(name = "facbook_link")

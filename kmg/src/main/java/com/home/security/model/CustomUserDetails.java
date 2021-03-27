@@ -21,11 +21,12 @@ public class CustomUserDetails implements UserDetails {
 
     public CustomUserDetails(AppUserEntity appUser){
         this.userName = appUser.getUserName();
-        this.password = appUser.getPassword();
+//        this.password = appUser.getPassword();
+        this.active = appUser.getActive();
+        this.role = new SimpleGrantedAuthority(appUser.getUserRoleByUserRoleId().getUserRoleName());
 //        this.roles = Arrays.stream(appUser.getUserRoleByUserRoleId())
 //                .map(SimpleGrantedAuthority::new)
 //                .collect(Collectors.toList());
-        this.role = new SimpleGrantedAuthority(appUser.getUserRoleByUserRoleId().getUserRoleName());
     }
 
 
