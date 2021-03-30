@@ -393,7 +393,10 @@ public class AppUserServiceImp implements AppUserService {
 				returnedResultModel.setError("You should Enter these fields" + " " + emptyFields);
 				return returnedResultModel;
 			}
-			UserRoleEntity role = userRoleRepository.findByUserRoleName(registerationDto.getAccount_type());
+			if(registerationDto.getAccountType().equalsIgnoreCase("lookingForServiceRadio")) {
+				registerationDto.setAccountType("عميل");
+			}
+			UserRoleEntity role = userRoleRepository.findByUserRoleName(registerationDto.getAccountType());
 			if(role ==  null) {
 				returnedResultModel.setMessage("Register Failed ..");
 				returnedResultModel.setError("Entered User role not found in our records .. make sure you entered a correct account type which has a correct user role");
@@ -405,7 +408,7 @@ public class AppUserServiceImp implements AppUserService {
 			appUserEntity.setPassword(registerationDto.getPassword());
 			appUserEntity.setConfirmPassword(registerationDto.getConfirmPassword());
 			appUserEntity.setUserMobile(registerationDto.getMobile());
-			appUserEntity.setName(registerationDto.getFirst_name() + " " + registerationDto.getLast_name());
+			appUserEntity.setName(registerationDto.getFirstName() + " " + registerationDto.getLastName());
 			appUserEntity.setUserName(registerationDto.getEmail());
 			appUserEntity.setUserGender(registerationDto.getGender());
 			appUserEntity.setUserRoleByUserRoleId(role);
@@ -422,7 +425,7 @@ public class AppUserServiceImp implements AppUserService {
 			location.setLocationName(registerationDto.getAddress());
 			location.setAreasByAreaId(areasEntity);
 			location = locationRepository.save(location);
-			AccountTypeEntity account = accountTypeRepository.findByAccountTypeName(registerationDto.getAccount_type());
+			AccountTypeEntity account = accountTypeRepository.findByAccountTypeName(registerationDto.getAccountType());
 
 			ShopEntity shop = new ShopEntity();
 			shop.setUserId(appUserEntity.getId());

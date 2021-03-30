@@ -7,15 +7,15 @@ public class HelperValidationUtil {
 	public static String validateDTO(RegisterationDto dto) {
 		String message = " " +" "+"";
 		StringBuilder builder = new StringBuilder();
-		if (dto.getFirst_name() == null || dto.getFirst_name().isEmpty()) {
+		if (dto.getFirstName() == null || dto.getFirstName().isEmpty()) {
 			message = "first name, ";
 			builder.append(message);
 		}
-		if (dto.getLast_name() == null || dto.getLast_name().isEmpty()) {
+		if (dto.getLastName() == null || dto.getLastName().isEmpty()) {
 			message = "last name";
 			builder.append(message);
 		}
-		if (dto.getAccount_type() == null || dto.getAccount_type().isEmpty()) {
+		if (dto.getAccountType() == null || dto.getAccountType().isEmpty()) {
 			message = "Account Type , ";
 			builder.append(message);
 		}

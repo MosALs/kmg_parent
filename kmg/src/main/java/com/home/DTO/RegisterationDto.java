@@ -2,24 +2,50 @@ package com.home.DTO;
 
 public class RegisterationDto {
 	private int id;
-	private  String first_name,last_name,mobile,gender,email,password,confirmPassword,country,gov,area,address,account_type,avatar;
+	private  String firstName,lastName,mobile,gender,email,password,confirmPassword,country,gov,area,address,accountType,userAvatar;
+	
+	
+	
+	
+	public RegisterationDto() {
+		super();
+	}
+	public RegisterationDto(int id, String firstName, String lastName, String mobile, String gender, String email,
+			String password, String confirmPassword, String country, String gov, String area, String address,
+			String accountType, String userAvatar) {
+		super();
+		this.id = id;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.mobile = mobile;
+		this.gender = gender;
+		this.email = email;
+		this.password = password;
+		this.confirmPassword = confirmPassword;
+		this.country = country;
+		this.gov = gov;
+		this.area = area;
+		this.address = address;
+		this.accountType = accountType;
+		this.userAvatar = userAvatar;
+	}
 	public int getId() {
 		return id;
 	}
 	public void setId(int id) {
 		this.id = id;
 	}
-	public String getFirst_name() {
-		return first_name;
+	public String getFirstName() {
+		return firstName;
 	}
-	public void setFirst_name(String first_name) {
-		this.first_name = first_name;
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
 	}
-	public String getLast_name() {
-		return last_name;
+	public String getLastName() {
+		return lastName;
 	}
-	public void setLast_name(String last_name) {
-		this.last_name = last_name;
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
 	public String getMobile() {
 		return mobile;
@@ -45,7 +71,6 @@ public class RegisterationDto {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
 	public String getConfirmPassword() {
 		return confirmPassword;
 	}
@@ -70,45 +95,35 @@ public class RegisterationDto {
 	public void setArea(String area) {
 		this.area = area;
 	}
-	
-	
 	public String getAddress() {
 		return address;
 	}
 	public void setAddress(String address) {
 		this.address = address;
 	}
-	public String getAccount_type() {
-		return account_type;
+	public String getAccountType() {
+		return accountType;
 	}
-	public void setAccount_type(String account_type) {
-		this.account_type = account_type;
+	public void setAccountType(String accountType) {
+		this.accountType = accountType;
 	}
-	public String getAvatar() {
-		return avatar;
+	public String getUserAvatar() {
+		return userAvatar;
 	}
-	public void setAvatar(String avatar) {
-		this.avatar = avatar;
+	public void setUserAvatar(String userAvatar) {
+		this.userAvatar = userAvatar;
 	}
-	public RegisterationDto(int id, String first_name, String last_name, String mobile, String gender, String email,
-			String password, String country, String gov, String area, String address, String account_type,
-			String avatar) {
-		super();
-		this.id = id;
-		this.first_name = first_name;
-		this.last_name = last_name;
-		this.mobile = mobile;
-		this.gender = gender;
-		this.email = email;
-		this.password = password;
-		this.country = country;
-		this.gov = gov;
-		this.area = area;
-		this.address = address;
-		this.account_type = account_type;
-		this.avatar = avatar;
+	@Override
+	public String toString() {
+		return "RegisterationDto [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", mobile="
+				+ mobile + ", gender=" + gender + ", email=" + email + ", password=" + password + ", confirmPassword="
+				+ confirmPassword + ", country=" + country + ", gov=" + gov + ", area=" + area + ", address=" + address
+				+ ", accountType=" + accountType + ", userAvatar=" + userAvatar + "]";
 	}
+
 	
-	    
+	
+
+
 
 }
