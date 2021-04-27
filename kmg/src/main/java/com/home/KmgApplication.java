@@ -17,6 +17,7 @@ public class KmgApplication {
 		
 	}
 	
+	
 	@Bean
 	public ReturnedResultModel returnedResultModel() {
 		return new ReturnedResultModel();
