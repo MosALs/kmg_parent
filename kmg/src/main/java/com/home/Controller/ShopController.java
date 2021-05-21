@@ -31,7 +31,7 @@ public class ShopController {
 	}
 
 	// @PostMapping(value = "/{id}")
-	@GetMapping(value = "user/{id}")
+	@GetMapping(value = "/user/{id}")
 	ResponseEntity<ReturnedResultModel> getShopById(@PathVariable(value = "id") int userId) throws NotFoundException {
 		ReturnedResultModel r = shopService.getByUserId(userId);
 		return ResponseEntity.ok(r);

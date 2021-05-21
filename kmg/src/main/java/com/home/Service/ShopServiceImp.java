@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import com.home.DTO.UserDataCollectionDTO;
 import com.home.DTO.UserProfileFullInfoDTO;
 import com.home.Repository.AccountTypeRepository;
 import com.home.Repository.AppUserRepository;
@@ -112,79 +113,113 @@ public class ShopServiceImp implements ShopService {
 
 		List<SpecializationEntity> specializations = new ArrayList<SpecializationEntity>();
 
+		List<UserDataCollectionDTO> userCollection = new ArrayList<UserDataCollectionDTO>();
+
 		List<ShopEntity> shops = shopRepository.findByUserId(userId);
 		if (shops == null || shops.size() == 0) {
 			throw new NotFoundException("Shops not found for this user");
 //			ReturnedResultModel r = HelperResultUtil.fillResultModel(null, "Shops not found for this user", HttpStatus.NOT_FOUND, null);
 		}
 		// user is worker or client.
+//		List<ShopEntity> list=(List<ShopEntity>) shops.get(0);
+
 		ShopEntity shopEntity = shops.get(0);
+		UserDataCollectionDTO userDataCollectionDTO = new UserDataCollectionDTO(
+				shopEntity.getPhoneByPhoneId(),
+		shopEntity.getLocationByLocationId().getLocationName(),
+				shopEntity.getSpecializationBySpecializationId().getSpecializationName());
 
-		int usersId = shopEntity.getUserId();
-		System.out.println("usersId: " + usersId);
-		AppUserEntity appUserEntity = appUserService.getUserById(userId);
+		userCollection.add(userDataCollectionDTO);
 
-		if (shopEntity.getLocationId() != null) {
-			int locationId = shopEntity.getLocationId();
-			System.out.println("locationId: " + locationId);
-			LocationEntity locationEntity = locationService.getByLocationID(locationId);
-			locations.add(locationEntity);
-		}
+		if (shopEntity.getUserId() != null) {
+			int usersId = shopEntity.getUserId();
+			System.out.println("usersId: " + usersId);
+			AppUserEntity appUserEntity = appUserService.getUserById(userId);
 
-		int accountTypeId = shopEntity.getAccountTypeId();
-		System.out.println("acccountTypeId: " + accountTypeId);
-		AccountTypeEntity accountTypeEntity = accountTypeService.getByAcccountTypeId(accountTypeId);
+			if (shopEntity.getAccountTypeId() != null) {
+				int accountTypeId = shopEntity.getAccountTypeId();
+				System.out.println("acccountTypeId: " + accountTypeId);
+				AccountTypeEntity accountTypeEntity = accountTypeService.getByAcccountTypeId(accountTypeId);
 
-		int phoneId = shopEntity.getPhoneId();
-		System.out.println("phonId: " + phoneId);
-		PhoneEntity phoneEntity = phoneService.getPhoneById(phoneId);
-		phones.add(phoneEntity);
+				if (shopEntity.getPhoneId() != null) {
+					int phoneId = shopEntity.getPhoneId();
+					System.out.println("phonId: " + phoneId);
+					PhoneEntity phoneEntity = phoneService.getPhoneById(phoneId);
+					phones.add(phoneEntity);
+				}
+				if (shopEntity.getSpecializationId() != null) {
+					int specializationId = shopEntity.getSpecializationId();
+					System.out.println("specializationId: " + specializationId);
+					SpecializationEntity specializationEntity = specializationService
+							.getBySpecializationID(specializationId);
+					specializations.add(specializationEntity);
+				}
+				if (shopEntity.getLocationId() != null) {
+					int locationId = shopEntity.getLocationId();
+					System.out.println("locationId: " + locationId);
+					LocationEntity locationEntity = locationService.getByLocationID(locationId);
+					locations.add(locationEntity);
+				}
 
-		int specializationId = shopEntity.getSpecializationId();
-		System.out.println("specializationId: " + specializationId);
-		SpecializationEntity specializationEntity = specializationService.getBySpecializationID(specializationId);
-		// specializations.add(specializationEntity);
+				Boolean notClient = false;
+				if (!accountTypeEntity.getAccountTypeName().equals("عميل")) {
+					notClient = true;
 
-		Boolean notClient = true;
-		if (!accountTypeEntity.getAccountTypeName().equals("عميل")) {
-			notClient = false;
+				}
 
-		}
+				// checked for rebate
 
-		//checked for rebate
-		if (shops.size() > 1) {
-			Set<Integer> specIds = new HashSet<>();
-			Set<Integer> locationIds = new HashSet<>();
-			Set<Integer> phoneIds = new HashSet<>();
-			for (int i = 1; i < shops.size(); i++) {
-				if (notClient) {
-					if (shops.get(0).getSpecializationId() != shops.get(i).getSpecializationId()) {
-						specIds.add(shops.get(i).getSpecializationId());
+				if (shops.size() >= 0) {
+
+					Set<Integer> specIds = new HashSet<>();
+					Set<Integer> locationIds = new HashSet<>();
+					Set<Integer> phoneIds = new HashSet<>();
+					for (int i = 0; i < shops.size(); i++) {
+
+						if (i > 0) {
+							UserDataCollectionDTO userDataCollectionDTO1 = new UserDataCollectionDTO(
+									shops.get(i).getPhoneByPhoneId(),
+									shops.get(i).getLocationByLocationId().getLocationName(),
+									shops.get(i).getSpecializationBySpecializationId().getSpecializationName()
+									);
+
+							userCollection.add(userDataCollectionDTO1);
+						}
+
+						if (notClient) {
+							if (shops.get(0).getSpecializationId() != shops.get(i).getSpecializationId()) {
+								specIds.add(shops.get(i).getSpecializationId());
+//								specIds.add(userCollection.get(i).getSpecializationId());
+							}
+
+						}
+
+						if (shops.get(0).getLocationId() != shops.get(i).getLocationId()) {
+							locationIds.add(shops.get(i).getLocationId());
+
+						}
+
+						if (shops.get(0).getPhoneId() != shops.get(i).getPhoneId()) {
+							phoneIds.add(shops.get(i).getPhoneId());
+						}
 					}
+					specializations.addAll(specializationService.getAllspecializationIn(specIds));
+					locations.addAll(locationService.getAllLocationIn(locationIds));
+					phones.addAll(phoneService.geAllPhoneIn(phoneIds));
 				}
 
-				if (shops.get(0).getLocationId() != shops.get(i).getLocationId()) {
-					locationIds.add(shops.get(i).getLocationId());
-				}
-				if (shops.get(0).getPhoneId() != shops.get(i).getPhoneId()) {
-					phoneIds.add(shops.get(i).getPhoneId());
-				}
+				infoDTO.setAccountTypeName(accountTypeEntity.getAccountTypeName());
+				//infoDTO.setLocations(locations);
+				//infoDTO.setPhones(phones);
+				//infoDTO.setSpecialization(specializations);
+				infoDTO.setUserCollection(userCollection);
+//				infoDTO.setActive(shopEntity.getActive());
+				infoDTO.setDeliveryNoDelivery(shopEntity.getDeliveryNoDelivery());
+				infoDTO.setFacbookLink(appUserEntity.getFacbookLink());
+				infoDTO.setMobile(appUserEntity.getUserMobile());
+				infoDTO.setName(appUserEntity.getName());
 			}
-			specializations = specializationService.getAllspecializationIn(specIds);
-			locations = locationService.getAllLocationIn(locationIds);
-			phones = phoneService.geAllPhoneIn(phoneIds);
 		}
-
-		infoDTO.setAccountTypeName(accountTypeEntity.getAccountTypeName());
-		infoDTO.setLocations(locations);
-		infoDTO.setPhones(phones);
-		infoDTO.setSpecialization(specializations);
-		infoDTO.setActive(shopEntity.getActive());
-		infoDTO.setDeliveryNoDelivery(shopEntity.getDeliveryNoDelivery());
-		infoDTO.setFacbookLink(appUserEntity.getFacbookLink());
-		infoDTO.setMobile(appUserEntity.getUserMobile());
-		infoDTO.setName(appUserEntity.getName());
-
 		ReturnedResultModel r = HelperResultUtil.fillResultModel("profile returned successfully", "no error",
 				HttpStatus.OK, infoDTO);
 

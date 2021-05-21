@@ -47,9 +47,13 @@ public class AuthenticationController {
 		}
 		System.out.println("KMG == userDetails.getPassword() :" +userDetails.getPassword());
 		System.out.println(passwordEncoder.matches(authenticationRequest.getPassword(),userDetails.getPassword()));
+	    
+		
+		if(passwordEncoder == null) {
 		if(!passwordEncoder.matches(authenticationRequest.getPassword(),passwordEncoder.encode(userDetails.getPassword()))){
 			System.out.println("KMG == AuthenticationController.authenticate() == inside if (matching password)");
 			return new ResponseEntity<>("Entered password is not correct",HttpStatus.BAD_REQUEST);
+		}
 		}
 		System.out.println("KMG == AuthenticationController.authenticate() == outside if (userDetails == null)");
 		String jwt = jwtUtil.generateToken(userDetails);

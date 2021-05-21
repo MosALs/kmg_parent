@@ -24,17 +24,27 @@ public class UserProfileFullInfoDTO {
 	private Date startDate;
 	private String wholeRetailSale;
 	private String deliveryNoDelivery;
-	private String mobileOne;
-	private String mobileTwo;
-	private String mobileThree;
-	private String mobileFour;
-	private String landLineOne;
-	private String landLineTwo;
-	private String landLineThree;
+//	private String mobileOne;
+//	private String mobileTwo;
+//	private String mobileThree;
+//	private String mobileFour;
+//	private String landLineOne;
+//	private String landLineTwo;
+//	private String landLineThree;
 	private List<LocationEntity> Locations;
 	private List<PhoneEntity> phones;
 	private  List <SpecializationEntity>specialization;
+	private  List <UserDataCollectionDTO> userCollection;
 	
+
+	
+	public List<UserDataCollectionDTO> getUserCollection() {
+		return userCollection;
+	}
+
+	public void setUserCollection(List<UserDataCollectionDTO> userCollection) {
+		this.userCollection = userCollection;
+	}
 
 	public String getName() {
 		return name;
@@ -156,61 +166,61 @@ public class UserProfileFullInfoDTO {
 		this.deliveryNoDelivery = deliveryNoDelivery;
 	}
 
-	public String getMobileOne() {
-		return mobileOne;
-	}
-
-	public void setMobileOne(String mobileOne) {
-		this.mobileOne = mobileOne;
-	}
-
-	public String getMobileTwo() {
-		return mobileTwo;
-	}
-
-	public void setMobileTwo(String mobileTwo) {
-		this.mobileTwo = mobileTwo;
-	}
-
-	public String getMobileThree() {
-		return mobileThree;
-	}
-
-	public void setMobileThree(String mobileThree) {
-		this.mobileThree = mobileThree;
-	}
-
-	public String getMobileFour() {
-		return mobileFour;
-	}
-
-	public void setMobileFour(String mobileFour) {
-		this.mobileFour = mobileFour;
-	}
-
-	public String getLandLineOne() {
-		return landLineOne;
-	}
-
-	public void setLandLineOne(String landLineOne) {
-		this.landLineOne = landLineOne;
-	}
-
-	public String getLandLineTwo() {
-		return landLineTwo;
-	}
-
-	public void setLandLineTwo(String landLineTwo) {
-		this.landLineTwo = landLineTwo;
-	}
-
-	public String getLandLineThree() {
-		return landLineThree;
-	}
-
-	public void setLandLineThree(String landLineThree) {
-		this.landLineThree = landLineThree;
-	}
+//	public String getMobileOne() {
+//		return mobileOne;
+//	}
+//
+//	public void setMobileOne(String mobileOne) {
+//		this.mobileOne = mobileOne;
+//	}
+//
+//	public String getMobileTwo() {
+//		return mobileTwo;
+//	}
+//
+//	public void setMobileTwo(String mobileTwo) {
+//		this.mobileTwo = mobileTwo;
+//	}
+//
+//	public String getMobileThree() {
+//		return mobileThree;
+//	}
+//
+//	public void setMobileThree(String mobileThree) {
+//		this.mobileThree = mobileThree;
+//	}
+//
+//	public String getMobileFour() {
+//		return mobileFour;
+//	}
+//
+//	public void setMobileFour(String mobileFour) {
+//		this.mobileFour = mobileFour;
+//	}
+//
+//	public String getLandLineOne() {
+//		return landLineOne;
+//	}
+//
+//	public void setLandLineOne(String landLineOne) {
+//		this.landLineOne = landLineOne;
+//	}
+//
+//	public String getLandLineTwo() {
+//		return landLineTwo;
+//	}
+//
+//	public void setLandLineTwo(String landLineTwo) {
+//		this.landLineTwo = landLineTwo;
+//	}
+//
+//	public String getLandLineThree() {
+//		return landLineThree;
+//	}
+//
+//	public void setLandLineThree(String landLineThree) {
+//		this.landLineThree = landLineThree;
+//	}
 
 
 	public List<LocationEntity> getLocations() {

@@ -48,7 +48,7 @@ public class CustomWebSecurityConfigurarAdapter extends WebSecurityConfigurerAda
         System.out.println("KMG == configure(HttpSecurity http)");
         http.csrf().disable()
        .cors().and()
-                .authorizeRequests().antMatchers("/authenticate","/rest/user/register").permitAll()
+                .authorizeRequests().antMatchers("/authenticate","/rest/user/register","/rest/sh/user").permitAll()
                 .anyRequest().authenticated()
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.addFilterBefore(customOncePerRequestFilter, UsernamePasswordAuthenticationFilter.class);

@@ -221,7 +221,7 @@ public class ShopEntity{
 		this.specializationBySpecializationId = specializationBySpecializationId;
 	}
 
-	@JsonIgnore
+//	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "location_id", referencedColumnName = "id", insertable = false, updatable = false)
 	public LocationEntity getLocationByLocationId() {
