@@ -10,6 +10,7 @@ import com.home.entities.SpecializationEntity;
 public class UserProfileFullInfoDTO {
 
 	private String name;
+	private String userName;
 	private String mobile;
 	private byte[] userImage;
 	private String websiteLink;
@@ -245,6 +246,14 @@ public class UserProfileFullInfoDTO {
 
 	public void setSpecialization(List<SpecializationEntity> specialization) {
 		this.specialization = specialization;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 
 	

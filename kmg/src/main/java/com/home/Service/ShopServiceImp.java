@@ -117,17 +117,32 @@ public class ShopServiceImp implements ShopService {
 
 		List<ShopEntity> shops = shopRepository.findByUserId(userId);
 		if (shops == null || shops.size() == 0) {
-			throw new NotFoundException("Shops not found for this user");
-//			ReturnedResultModel r = HelperResultUtil.fillResultModel(null, "Shops not found for this user", HttpStatus.NOT_FOUND, null);
+//			throw new NotFoundException("Shops not found for this user");
+			ReturnedResultModel r = HelperResultUtil.fillResultModel("This user is not found in our records",
+					"Not Found", HttpStatus.NOT_FOUND, null);
+			return r;
+
 		}
 		// user is worker or client.
 //		List<ShopEntity> list=(List<ShopEntity>) shops.get(0);
 
 		ShopEntity shopEntity = shops.get(0);
-		UserDataCollectionDTO userDataCollectionDTO = new UserDataCollectionDTO(
-				shopEntity.getPhoneByPhoneId(),
-		shopEntity.getLocationByLocationId().getLocationName(),
-				shopEntity.getSpecializationBySpecializationId().getSpecializationName());
+		UserDataCollectionDTO userDataCollectionDTO = new UserDataCollectionDTO(shopEntity.getPhoneByPhoneId(),
+				shopEntity.getLocationByLocationId().getLocationName(),
+
+				shopEntity.getLocationByLocationId().getAreasByAreaId() != null
+						? shopEntity.getLocationByLocationId().getAreasByAreaId().getAreaName()
+						: "Not Found",
+
+				shopEntity.getLocationByLocationId().getAreasByAreaId() != null ? shopEntity.getLocationByLocationId()
+						.getAreasByAreaId().getGovernoratByGovernoratId().getGovernoratName() : "Not Found",
+						
+						shopEntity.getLocationByLocationId().getAreasByAreaId() !=null ?
+						shopEntity.getLocationByLocationId().getAreasByAreaId().getGovernoratByGovernoratId()
+								.getCountriesByCountryId().getArabicShort(): "Not Found",
+				shopEntity.getSpecializationBySpecializationId().getSpecializationName()
+
+		);
 
 		userCollection.add(userDataCollectionDTO);
 
@@ -180,8 +195,12 @@ public class ShopServiceImp implements ShopService {
 							UserDataCollectionDTO userDataCollectionDTO1 = new UserDataCollectionDTO(
 									shops.get(i).getPhoneByPhoneId(),
 									shops.get(i).getLocationByLocationId().getLocationName(),
-									shops.get(i).getSpecializationBySpecializationId().getSpecializationName()
-									);
+									shops.get(i).getLocationByLocationId().getAreasByAreaId() !=null ? shops.get(i).getLocationByLocationId().getAreasByAreaId().getAreaName():"Not Found",
+									shops.get(i).getLocationByLocationId().getAreasByAreaId() !=null ? shops.get(i).getLocationByLocationId().getAreasByAreaId()
+											.getGovernoratByGovernoratId().getGovernoratName():"Not Found",
+									shops.get(i).getLocationByLocationId().getAreasByAreaId() !=null ? shops.get(i).getLocationByLocationId().getAreasByAreaId()
+											.getGovernoratByGovernoratId().getCountriesByCountryId().getArabicShort():"Not Found",
+									shops.get(i).getSpecializationBySpecializationId().getSpecializationName());
 
 							userCollection.add(userDataCollectionDTO1);
 						}
@@ -209,15 +228,16 @@ public class ShopServiceImp implements ShopService {
 				}
 
 				infoDTO.setAccountTypeName(accountTypeEntity.getAccountTypeName());
-				//infoDTO.setLocations(locations);
-				//infoDTO.setPhones(phones);
-				//infoDTO.setSpecialization(specializations);
+				// infoDTO.setLocations(locations);
+				// infoDTO.setPhones(phones);
+				// infoDTO.setSpecialization(specializations);
 				infoDTO.setUserCollection(userCollection);
 //				infoDTO.setActive(shopEntity.getActive());
 				infoDTO.setDeliveryNoDelivery(shopEntity.getDeliveryNoDelivery());
 				infoDTO.setFacbookLink(appUserEntity.getFacbookLink());
 				infoDTO.setMobile(appUserEntity.getUserMobile());
 				infoDTO.setName(appUserEntity.getName());
+				infoDTO.setUserName(appUserEntity.getUserName());
 			}
 		}
 		ReturnedResultModel r = HelperResultUtil.fillResultModel("profile returned successfully", "no error",

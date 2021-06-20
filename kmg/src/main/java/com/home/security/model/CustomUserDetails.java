@@ -15,12 +15,16 @@ public class CustomUserDetails implements UserDetails {
 	private String userName;
 	private String password;
 	private boolean active;
+	private int id;
+	private String userGender;
+	
 	private List<GrantedAuthority> roles;
 	private SimpleGrantedAuthority role;
-
 	public CustomUserDetails(AppUserEntity appUser) {
 		this.userName = appUser.getUserName();
        this.password = appUser.getPassword();
+       this.userGender=appUser.getUserGender();
+       this.id=appUser.getId();
 		if (appUser.getActive() == null) {
 			appUser.getActive();
 		}
@@ -35,6 +39,16 @@ public class CustomUserDetails implements UserDetails {
 		this.userName = userName;
 		this.password = password;
       // this.active = active;
+		this.role = role;
+	}
+	public CustomUserDetails(String userName, String password, boolean active, int id, List<GrantedAuthority> roles,
+			SimpleGrantedAuthority role) {
+		super();
+		this.userName = userName;
+		this.password = password;
+		this.active = active;
+		this.id=id;
+		this.roles = roles;
 		this.role = role;
 	}
 
@@ -111,5 +125,22 @@ public class CustomUserDetails implements UserDetails {
 	public void setRoles(List<GrantedAuthority> roles) {
 		this.roles = roles;
 	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public String getUserGender() {
+		return userGender;
+	}
+
+	public void setUserGender(String userGender) {
+		this.userGender = userGender;
+	}
+
 
 }

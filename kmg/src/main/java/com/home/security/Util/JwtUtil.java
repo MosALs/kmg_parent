@@ -24,7 +24,8 @@ public class JwtUtil {
 //        claims.put("username",userDetails.getUsername());
         claims.put("active",userDetails.isActive());
         claims.put("role",userDetails.getRole());
-
+        claims.put("userid",userDetails.getId());
+        claims.put("userGender",userDetails.getUserGender());
         return doGenerateToken(claims, userDetails.getUsername());
     }
 

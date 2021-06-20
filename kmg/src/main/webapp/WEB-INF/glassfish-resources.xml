@@ -5,7 +5,7 @@
         <property name="serverName" value=""/>
         <property name="User" value="test"/>
         <property name="Password" value="rootsql"/>
-        <property name="URL" value="jdbc:sqlserver://;databaseName=kmg"/>
+        <property name="URL" value="jdbc:sqlserver://;databaseName=kmgnew"/>
         <property name="driverClass" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
     </jdbc-connection-pool>
     <jdbc-resource enabled="true" jndi-name="java:app/kmg" object-type="user" pool-name="microsoft_sql_testPool"/>

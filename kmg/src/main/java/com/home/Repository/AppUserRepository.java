@@ -45,6 +45,7 @@ public interface AppUserRepository extends JpaRepository<AppUserEntity, Integer>
 	//Optional<AppUser> findByUserName(String userName);
 
 	Optional<AppUserEntity> findByUserName(String userName);
+	
 	@Query(value="select ap.userName from AppUserEntity ap")
 	List<AppUserEntity> findAllUserName();
 	

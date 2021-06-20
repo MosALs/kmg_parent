@@ -32,7 +32,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     public CustomUserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         System.out.println("KMG == loadUserByUsername() username before : " + username);
         Optional<AppUserEntity> appUser = appUserRepository.findByUserName(username);
-
+        
         if (!appUser.isPresent()) {
             // if returned user is null
             return null;

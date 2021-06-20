@@ -9,10 +9,10 @@ import org.springframework.stereotype.Repository;
 import com.home.View.UserSearchView;
 
 @Repository
-public interface UserSearchViewRepository extends JpaRepository<UserSearchView, Integer>,
-JpaSpecificationExecutor<UserSearchView>{
+public interface UserSearchViewRepository extends JpaRepository<UserSearchView, Integer>,JpaSpecificationExecutor<UserSearchView>{
 
 	UserSearchView findAllById(int id);
+	
 	List<UserSearchView> findByName(String shopName);
 	
 	

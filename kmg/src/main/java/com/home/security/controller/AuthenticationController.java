@@ -17,47 +17,50 @@ import org.springframework.web.bind.annotation.*;
 
 import com.home.security.model.AuthenticationRequest;
 
-
 @RestController()
 @CrossOrigin(origins = "*")
 public class AuthenticationController {
 
-    @Autowired
-    AuthenticationManager authenticationManager;
+	@Autowired
+	AuthenticationManager authenticationManager;
 
-    @Autowired
+	@Autowired
 	CustomUserDetailsService customUserDetailsService;
 
-    @Autowired
+	@Autowired
 	JwtUtil jwtUtil;
 
-    @Autowired
+	@Autowired
 	PasswordEncoder passwordEncoder;
 
 	@RequestMapping(value = "/authenticate", method = RequestMethod.POST)
 	public ResponseEntity<?> authenticate(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
 		System.out.println("KMG == AuthenticationController.authenticate().first row");
 
-		ResponseEntity<?> responseEntity = checkAuthentication(authenticationRequest.getUsername(), authenticationRequest.getPassword());
+		ResponseEntity<?> responseEntity = checkAuthentication(authenticationRequest.getUsername(),
+				authenticationRequest.getPassword());
 
-		CustomUserDetails userDetails = customUserDetailsService.loadUserByUsername(authenticationRequest.getUsername());
-		if (userDetails == null){
+		CustomUserDetails userDetails = customUserDetailsService
+				.loadUserByUsername(authenticationRequest.getUsername());
+		if (userDetails == null) {
 			System.out.println("KMG == AuthenticationController.authenticate() == inside if (userDetails == null)");
-			return new ResponseEntity<>("Username : "+  authenticationRequest.getUsername() + " is not found in our records",HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>(
+					"Username : " + authenticationRequest.getUsername() + " is not found in our records",
+					HttpStatus.NOT_FOUND);
 		}
-		System.out.println("KMG == userDetails.getPassword() :" +userDetails.getPassword());
-		System.out.println(passwordEncoder.matches(authenticationRequest.getPassword(),userDetails.getPassword()));
-	    
-		
-		if(passwordEncoder == null) {
-		if(!passwordEncoder.matches(authenticationRequest.getPassword(),passwordEncoder.encode(userDetails.getPassword()))){
+		System.out.println("KMG == userDetails.getPassword() :" + userDetails.getPassword());
+		System.out.println(passwordEncoder.matches(authenticationRequest.getPassword(), userDetails.getPassword()));
+
+
+		if (!passwordEncoder.matches(authenticationRequest.getPassword(),
+				passwordEncoder.encode(userDetails.getPassword()))) {
 			System.out.println("KMG == AuthenticationController.authenticate() == inside if (matching password)");
-			return new ResponseEntity<>("Entered password is not correct",HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>("Entered password is not correct", HttpStatus.BAD_REQUEST);
 		}
-		}
+
 		System.out.println("KMG == AuthenticationController.authenticate() == outside if (userDetails == null)");
 		String jwt = jwtUtil.generateToken(userDetails);
-	    return ResponseEntity.ok(new AuthenticationResponse(jwt));
+		return ResponseEntity.ok(new AuthenticationResponse(jwt));
 	}
 
 	private ResponseEntity<?> checkAuthentication(String username, String password) {
@@ -67,9 +70,10 @@ public class AuthenticationController {
 		Objects.requireNonNull(password);
 
 		try {
-			return ResponseEntity.ok(authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password)));
+			return ResponseEntity.ok(
+					authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password)));
 		} catch (AuthenticationException e) {
-			return new ResponseEntity(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 //		catch (BadCredentialsException e) {
 //			return new ResponseEntity("Bad credentials!", HttpStatus.BAD_REQUEST);
