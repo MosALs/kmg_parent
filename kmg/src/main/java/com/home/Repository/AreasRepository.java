@@ -19,8 +19,7 @@ public interface AreasRepository extends JpaRepository<AreasEntity, Integer> {
 
 	AreasEntity findByAreaName(String areaName);
 
-	
-	@Modifying()
+		@Modifying()
 	@Transactional
 	@Query(value = "UPDATE Areas a SET a.areaName=:newAreaName WHERE a.areaName=:oldAreaName")
 	int updateArea(@Param("newAreaName") String newAreaName, @Param("oldAreaName") String oldAreaName);

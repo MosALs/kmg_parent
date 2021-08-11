@@ -18,6 +18,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "shop", schema = "dbo", catalog = "kmgnew")
@@ -27,6 +28,7 @@ public class ShopEntity{
 	private String shopName;
 	private Integer specializationId;
 	private Integer locationId;
+//	private Integer userRatingAndReviewsId;
 	private String street;
 	private Boolean active;
 	private Date startDate;
@@ -37,10 +39,11 @@ public class ShopEntity{
 	private PhoneEntity phoneByPhoneId;
 	private AppUserEntity appUserByUserId;
 	private SpecializationEntity specializationBySpecializationId;
-	private LocationEntity locationByLocationId;
+	private LocationEntity locationByLocationId;					   
 	private AccountTypeEntity accountTypeByAccountTypeId;
 	private Collection<ShopProductEntity> shopProductsById;
 	private Collection<WorkOrderEntity> workOrdersById;
+//	private UserRatingAndReviews userRatingAndReviewsByUserRatingAndReviewsId;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -153,6 +156,16 @@ public class ShopEntity{
 		this.accountTypeId = accountTypeId;
 	}
 
+////	@Basic
+//	@Column(name = "account_type_id")
+//	public Integer getUserRatingAndReviewsId() {
+//		return userRatingAndReviewsId;
+//	}
+//
+//	public void setUserRatingAndReviewsId(Integer userRatingAndReviewsId) {
+//		this.userRatingAndReviewsId = userRatingAndReviewsId;
+//	}
+
 	@Basic
 	@Column(name = "phone_id")
 	public Integer getPhoneId() {
@@ -243,7 +256,10 @@ public class ShopEntity{
 		this.accountTypeByAccountTypeId = accountTypeByAccountTypeId;
 	}
 
-	@JsonIgnore
+	
+//	@JsonIgnore
+    @JsonManagedReference
+
 	@OneToMany(mappedBy = "shopByShopId")
 	public Collection<ShopProductEntity> getShopProductsById() {
 		return shopProductsById;
@@ -253,26 +269,31 @@ public class ShopEntity{
 		this.shopProductsById = shopProductsById;
 	}
 
-	@JsonIgnore
-	@OneToMany(mappedBy = "shopByWorkUserId")
-	public Collection<WorkOrderEntity> getWorkOrdersById() {
-		return workOrdersById;
-	}
+	
+//	@JsonIgnore
+//	@OneToMany(mappedBy = "shopByWorkUserId")
+//	public Collection<WorkOrderEntity> getWorkOrdersById() {
+//		return workOrdersById;
+//	}
+//
+//	public void setWorkOrdersById(Collection<WorkOrderEntity> workOrdersById) {
+//		this.workOrdersById = workOrdersById;
+//	}
 
-	public void setWorkOrdersById(Collection<WorkOrderEntity> workOrdersById) {
-		this.workOrdersById = workOrdersById;
-	}
+	
+//	@JsonIgnore
+//    @ManyToOne(fetch = FetchType.LAZY)
+//	//@ManyToOne(fetch = FetchType.EAGER)
+//	@JoinColumn(name = "rating_and_reviews_id", referencedColumnName = "id", insertable = false, updatable = false)
+//	public UserRatingAndReviews getUserRatingAndReviewsByUserRatingAndReviewsId() {
+//		return userRatingAndReviewsByUserRatingAndReviewsId;
+//	}
+//
+//	public void setUserRatingAndReviewsByUserRatingAndReviewsId(
+//			UserRatingAndReviews userRatingAndReviewsByUserRatingAndReviewsId) {
+//		this.userRatingAndReviewsByUserRatingAndReviewsId = userRatingAndReviewsByUserRatingAndReviewsId;
+//	}
 
-	@Override
-	public String toString() {
-		return "ShopEntity [id=" + id + ", userId=" + userId + ", shopName=" + shopName + ", specializationId="
-				+ specializationId + ", locationId=" + locationId + ", street=" + street + ", active=" + active
-				+ ", startDate=" + startDate + ", accountTypeId=" + accountTypeId + ", wholeRetailSale="
-				+ wholeRetailSale + ", deliveryNoDelivery=" + deliveryNoDelivery + ", phoneId=" + phoneId
-				+ ", phoneByPhoneId=" + phoneByPhoneId + ", appUserByUserId=" + appUserByUserId
-				+ ", specializationBySpecializationId=" + specializationBySpecializationId + ", locationByLocationId="
-				+ locationByLocationId + ", accountTypeByAccountTypeId=" + accountTypeByAccountTypeId
-				+ ", shopProductsById=" + shopProductsById + ", workOrdersById=" + workOrdersById + "]";
-	}
+	
 
 }

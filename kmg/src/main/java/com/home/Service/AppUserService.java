@@ -22,6 +22,7 @@ public interface AppUserService {
 
 	AppUserEntity getUserById(int id);
 	ReturnedResultModel save(UserRegisterationDto appUser);
+	
 	ReturnedResultModel register(RegisterationDto registerationDto);
 
 

@@ -2,6 +2,7 @@ package com.home.DTO;
 
 public class RegisterationDto {
 	private int id;
+	
 	private  String firstName,lastName,mobile,gender,email,password,confirmPassword,country,gov,area,address,accountType,userAvatar;
 	
 	

@@ -8,10 +8,11 @@ import java.util.Objects;
 @Table(name = "product", schema = "dbo", catalog = "kmgnew")
 public class ProductEntity {
     private int id;
-    private String productname;
+    private String productName;
     private Collection<ShopProductEntity> shopProductsById;
 
-    @Id
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     public int getId() {
         return id;
@@ -20,29 +21,30 @@ public class ProductEntity {
     public void setId(int id) {
         this.id = id;
     }
-
-    @Basic
-    @Column(name = "productname")
-    public String getProductname() {
-        return productname;
-    }
-
-    public void setProductname(String productname) {
-        this.productname = productname;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ProductEntity that = (ProductEntity) o;
         return id == that.id &&
-                Objects.equals(productname, that.productname);
+                Objects.equals(productName, that.productName);
     }
 
-    @Override
+ 
+
+    @Basic
+    @Column(name = "product_name")
+	public String getProductName() {
+		return productName;
+	}
+
+	public void setProductName(String productName) {
+		this.productName = productName;
+	}
+
+	@Override
     public int hashCode() {
-        return Objects.hash(id, productname);
+        return Objects.hash(id, productName);
     }
 
     @OneToMany(mappedBy = "productByProductId")

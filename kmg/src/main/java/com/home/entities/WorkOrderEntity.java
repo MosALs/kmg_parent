@@ -1,178 +1,142 @@
 package com.home.entities;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-
-import javax.persistence.*;
 import java.sql.Date;
 import java.sql.Timestamp;
-import java.util.Collection;
-import java.util.Objects;
+
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "work_order", schema = "dbo", catalog = "kmgnew")
 public class WorkOrderEntity {
-    private int id;
-    private Integer requsetUserId;
-    private Integer workUserId;
-    private Timestamp requsetDate;
-    private Timestamp closedDate;
-    private Date openDate;
-    private Integer rating;
-    private String remarks;
-    private String workNeeded;
-    private Boolean paid;
-    private Collection<ProductTransactionEntity> productTransactionsById;
-    private AppUserEntity appUserByRequsetUserId;
-    private ShopEntity shopByWorkUserId;
 
-    @Id
-    @Column(name = "id")
-    public int getId() {
-        return id;
-    }
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
+	@Column(name = "rating")
+	private int rating;
+	@Column(name = "review")
+	private String review;
+	@Column(name = "sending_client_id")
+	private int sendingClientId;
+	@Column(name = "receiving_user_id")
+	private int receivingUserId;
+	private Timestamp requsetDate;
+	private Timestamp closedDate;
+	private Date openDate;
+	private String workNeeded;
+	private Boolean paid;
+//	private Collection<ProductTransactionEntity> productTransactionsById;
+//	private AppUserEntity appUserByRequsetUserId;
+//	private ShopEntity shopByWorkUserId;
 
-    public void setId(int id) {
-        this.id = id;
-    }
+	public Integer getId() {
+		return id;
+	}
 
-    @Basic
-    @Column(name = "requset_user_id")
-    public Integer getRequsetUserId() {
-        return requsetUserId;
-    }
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
-    public void setRequsetUserId(Integer requsetUserId) {
-        this.requsetUserId = requsetUserId;
-    }
+	
+	public int getRating() {
+		return rating;
+	}
 
-    @Basic
-    @Column(name = "work_user_id")
-    public Integer getWorkUserId() {
-        return workUserId;
-    }
+	public String getReview() {
+		return review;
+	}
 
-    public void setWorkUserId(Integer workUserId) {
-        this.workUserId = workUserId;
-    }
+	public void setReview(String review) {
+		this.review = review;
+	}
 
-    @Basic
-    @Column(name = "requset_date")
-    public Timestamp getRequsetDate() {
-        return requsetDate;
-    }
+	public int getSendingClientId() {
+		return sendingClientId;
+	}
 
-    public void setRequsetDate(Timestamp requsetDate) {
-        this.requsetDate = requsetDate;
-    }
+	public void setSendingClientId(int sendingClientId) {
+		this.sendingClientId = sendingClientId;
+	}
 
-    @Basic
-    @Column(name = "closed_date")
-    public Timestamp getClosedDate() {
-        return closedDate;
-    }
+	public int getReceivingUserId() {
+		return receivingUserId;
+	}
 
-    public void setClosedDate(Timestamp closedDate) {
-        this.closedDate = closedDate;
-    }
+	public void setReceivingUserId(int receivingUserId) {
+		this.receivingUserId = receivingUserId;
+	}
 
-    @Basic
-    @Column(name = "open_date")
-    public Date getOpenDate() {
-        return openDate;
-    }
+	public void setRating(int rating) {
+		this.rating = rating;
+	}
 
-    public void setOpenDate(Date openDate) {
-        this.openDate = openDate;
-    }
+	@Basic
+	@Column(name = "requset_date")
+	public Timestamp getRequsetDate() {
+		return requsetDate;
+	}
 
-    @Basic
-    @Column(name = "rating")
-    public Integer getRating() {
-        return rating;
-    }
+	public void setRequsetDate(Timestamp requsetDate) {
+		this.requsetDate = requsetDate;
+	}
 
-    public void setRating(Integer rating) {
-        this.rating = rating;
-    }
+	@Basic
+	@Column(name = "closed_date")
+	public Timestamp getClosedDate() {
+		return closedDate;
+	}
 
-    @Basic
-    @Column(name = "remarks")
-    public String getRemarks() {
-        return remarks;
-    }
+	public void setClosedDate(Timestamp closedDate) {
+		this.closedDate = closedDate;
+	}
 
-    public void setRemarks(String remarks) {
-        this.remarks = remarks;
-    }
+	@Basic
+	@Column(name = "open_date")
+	public Date getOpenDate() {
+		return openDate;
+	}
 
-    @Basic
-    @Column(name = "work_needed")
-    public String getWorkNeeded() {
-        return workNeeded;
-    }
+	public void setOpenDate(Date openDate) {
+		this.openDate = openDate;
+	}
 
-    public void setWorkNeeded(String workNeeded) {
-        this.workNeeded = workNeeded;
-    }
+	@Basic
+	@Column(name = "work_needed")
+	public String getWorkNeeded() {
+		return workNeeded;
+	}
 
-    @Basic
-    @Column(name = "paid")
-    public Boolean getPaid() {
-        return paid;
-    }
+	public void setWorkNeeded(String workNeeded) {
+		this.workNeeded = workNeeded;
+	}
 
-    public void setPaid(Boolean paid) {
-        this.paid = paid;
-    }
+	@Basic
+	@Column(name = "paid")
+	public Boolean getPaid() {
+		return paid;
+	}
+	
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        WorkOrderEntity that = (WorkOrderEntity) o;
-        return id == that.id &&
-                Objects.equals(requsetUserId, that.requsetUserId) &&
-                Objects.equals(workUserId, that.workUserId) &&
-                Objects.equals(requsetDate, that.requsetDate) &&
-                Objects.equals(closedDate, that.closedDate) &&
-                Objects.equals(openDate, that.openDate) &&
-                Objects.equals(rating, that.rating) &&
-                Objects.equals(remarks, that.remarks) &&
-                Objects.equals(workNeeded, that.workNeeded) &&
-                Objects.equals(paid, that.paid);
-    }
+	public void setPaid(Boolean paid) {
+		this.paid = paid;
+	}
+//	                     //workOrderByWorkorderId
+//	@OneToMany(mappedBy = "workOrderByWorkorderId")
+//	public Collection<ProductTransactionEntity> getProductTransactionsById() {
+//		return productTransactionsById;
+//	}
+//
+//	public void setProductTransactionsById(Collection<ProductTransactionEntity> productTransactionsById) {
+//		this.productTransactionsById = productTransactionsById;
+//	}
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, requsetUserId, workUserId, requsetDate, closedDate, openDate, rating, remarks, workNeeded, paid);
-    }
 
-    @OneToMany(mappedBy = "workOrderByWorkorderId")
-    public Collection<ProductTransactionEntity> getProductTransactionsById() {
-        return productTransactionsById;
-    }
+    
 
-    public void setProductTransactionsById(Collection<ProductTransactionEntity> productTransactionsById) {
-        this.productTransactionsById = productTransactionsById;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "requset_user_id", referencedColumnName = "id",insertable=false ,updatable=false)
-    public AppUserEntity getAppUserByRequsetUserId() {
-        return appUserByRequsetUserId;
-    }
-
-    public void setAppUserByRequsetUserId(AppUserEntity appUserByRequsetUserId) {
-        this.appUserByRequsetUserId = appUserByRequsetUserId;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "work_user_id", referencedColumnName = "id",insertable=false ,updatable=false)
-    public ShopEntity getShopByWorkUserId() {
-        return shopByWorkUserId;
-    }
-
-    public void setShopByWorkUserId(ShopEntity shopByWorkUserId) {
-        this.shopByWorkUserId = shopByWorkUserId;
-    }
 }

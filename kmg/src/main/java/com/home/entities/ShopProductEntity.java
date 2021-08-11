@@ -1,11 +1,22 @@
 package com.home.entities;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import javax.persistence.*;
 import java.util.Collection;
 import java.util.Objects;
+
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "shop_product", schema = "dbo", catalog = "kmgnew")
@@ -23,6 +34,7 @@ public class ShopProductEntity {
     private ManufacturerEntity manufacturerByManufacturerId;
 
     @Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     public int getId() {
         return id;
@@ -111,6 +123,7 @@ public class ShopProductEntity {
         return Objects.hash(id, productId, shopId, size, color, unitPrice, manufacturerId);
     }
 
+    @JsonBackReference
     @OneToMany(mappedBy = "shopProductByProductShopId")
     public Collection<ProductTransactionEntity> getProductTransactionsById() {
         return productTransactionsById;
@@ -130,6 +143,7 @@ public class ShopProductEntity {
         this.productByProductId = productByProductId;
     }
     @JsonIgnore
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "shop_id", referencedColumnName = "id",insertable=false ,updatable=false)
     public ShopEntity getShopByShopId() {

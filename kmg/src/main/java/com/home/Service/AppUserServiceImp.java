@@ -393,13 +393,14 @@ public class AppUserServiceImp implements AppUserService {
 				returnedResultModel.setError("You should Enter these fields" + " " + emptyFields);
 				return returnedResultModel;
 			}
-			if(registerationDto.getAccountType().equalsIgnoreCase("lookingForServiceRadio")) {
+			if (registerationDto.getAccountType().equalsIgnoreCase("lookingForServiceRadio")) {
 				registerationDto.setAccountType("عميل");
 			}
 			UserRoleEntity role = userRoleRepository.findByUserRoleName(registerationDto.getAccountType());
-			if(role ==  null) {
+			if (role == null) {
 				returnedResultModel.setMessage("Register Failed ..");
-				returnedResultModel.setError("Entered User role not found in our records .. make sure you entered a correct account type which has a correct user role");
+				returnedResultModel.setError(
+						"Entered User role not found in our records .. make sure you entered a correct account type which has a correct user role");
 				returnedResultModel.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
 				returnedResultModel.setResult(null);
 				return returnedResultModel;
@@ -432,7 +433,7 @@ public class AppUserServiceImp implements AppUserService {
 			shop.setLocationId(location.getId());
 			shop.setAccountTypeId(account.getId());
 			shop = shopRepository.save(shop);
-			
+
 			CustomUserDetails userDetails = new CustomUserDetails(appUserEntity);
 
 			String jwt = jwtUtil.generateToken(userDetails);
@@ -443,7 +444,7 @@ public class AppUserServiceImp implements AppUserService {
 			return returnedResultModel;
 		} catch (RuntimeException e) {
 			String message = e.getMessage();
-			
+
 			returnedResultModel.setMessage("Register Failed ..");
 			returnedResultModel.setError(message);
 			returnedResultModel.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);

@@ -7,7 +7,6 @@
     <class>com.home.Entity.Areas</class>
     <class>com.home.Entity.Countries</class>
     <class>com.home.Entity.Governorates</class>
-    <class>com.home.Entity.Ranking</class>
     <class>com.home.Entity.Specialization</class>
     <class>com.home.Entity.Sysdiagrams</class>
     <class>com.home.View.UserSearchView</class>

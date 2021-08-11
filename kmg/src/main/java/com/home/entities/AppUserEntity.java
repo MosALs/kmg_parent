@@ -54,7 +54,7 @@ public class AppUserEntity {
 	@JsonView(View.AuthenticateInfo.class)
 	private UserRoleEntity userRoleByUserRoleId;
 	private Collection<ShopEntity> shopsById;
-	private Collection<WorkOrderEntity> workOrdersById;
+//	private Collection<WorkOrderEntity> workOrdersById;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -222,24 +222,17 @@ public class AppUserEntity {
 	public void setShopsById(Collection<ShopEntity> shopsById) {
 		this.shopsById = shopsById;
 	}
+//
+//	@JsonIgnore
+//	@OneToMany(mappedBy = "appUserByRequsetUserId")
+//	public Collection<WorkOrderEntity> getWorkOrdersById() {
+//		return workOrdersById;
+//	}
+//
+//	public void setWorkOrdersById(Collection<WorkOrderEntity> workOrdersById) {
+//		this.workOrdersById = workOrdersById;
+//	}
 
-	@JsonIgnore
-	@OneToMany(mappedBy = "appUserByRequsetUserId")
-	public Collection<WorkOrderEntity> getWorkOrdersById() {
-		return workOrdersById;
-	}
 
-	public void setWorkOrdersById(Collection<WorkOrderEntity> workOrdersById) {
-		this.workOrdersById = workOrdersById;
-	}
-
-	@Override
-	public String toString() {
-		return "AppUserEntity [id=" + id + ", name=" + name + ", userName=" + userName + ", userMobile=" + userMobile
-				+ ", userImage=" + Arrays.toString(userImage) + ", userHours=" + userHours + ", userGender="
-				+ userGender + ", websiteLink=" + websiteLink + ", password=" + password + ", facbookLink="
-				+ facbookLink + ", userRoleByUserRoleId=" + userRoleByUserRoleId + ", shopsById=" + shopsById
-				+ ", workOrdersById=" + workOrdersById + "]";
-	}
 
 }

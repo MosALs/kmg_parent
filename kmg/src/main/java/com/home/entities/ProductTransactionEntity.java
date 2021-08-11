@@ -14,6 +14,7 @@ public class ProductTransactionEntity {
     private ShopProductEntity shopProductByProductShopId;
 
     @Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     public int getId() {
         return id;

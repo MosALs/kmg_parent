@@ -26,5 +26,6 @@ public interface ShopService {
 	int ModifyByshop(String newshopName, String oldshopNamee);
 
 	ReturnedResultModel getByUserId(int userId)throws NotFoundException;
+	ReturnedResultModel getByUserIdShop(int userId)throws NotFoundException;
 
 }

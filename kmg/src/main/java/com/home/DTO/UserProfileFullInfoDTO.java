@@ -36,9 +36,32 @@ public class UserProfileFullInfoDTO {
 	private List<PhoneEntity> phones;
 	private  List <SpecializationEntity>specialization;
 	private  List <UserDataCollectionDTO> userCollection;
+//	private  List<UserRatingAndReviewsDTO> userRatingsAndReviews;
+	private List<WorkOrderDTO> workOrderDTOs;
+//	private List<ShopProductUserDataDTO> shopProductUserDataDTO;
+//	private List<ShopProductDTO> shopProductDTOs;
+	
 	
 
 	
+//
+//	public List<ShopProductDTO> getShopProductDTOs() {
+//		return shopProductDTOs;
+//	}
+//
+//	public void setShopProductDTOs(List<ShopProductDTO> shopProductDTOs) {
+//		this.shopProductDTOs = shopProductDTOs;
+//	}
+
+
+	public List<WorkOrderDTO> getWorkOrderDTOs() {
+		return workOrderDTOs;
+	}
+
+	public void setWorkOrderDTOs(List<WorkOrderDTO> workOrderDTOs) {
+		this.workOrderDTOs = workOrderDTOs;
+	}
+
 	public List<UserDataCollectionDTO> getUserCollection() {
 		return userCollection;
 	}
@@ -255,7 +278,18 @@ public class UserProfileFullInfoDTO {
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
+//
+//	public List<UserRatingAndReviewsDTO> getUserRatingsAndReviews() {
+//		return userRatingsAndReviews;
+//	}
+//
+//	public void setUserRatingsAndReviews(List<UserRatingAndReviewsDTO> userRatingsAndReviews) {
+//		this.userRatingsAndReviews = userRatingsAndReviews;
+//	}
 
+
+
+	
 	
 	
 }

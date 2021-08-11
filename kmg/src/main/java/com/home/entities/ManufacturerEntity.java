@@ -11,7 +11,8 @@ public class ManufacturerEntity {
     private String manufacturerName;
     private Collection<ShopProductEntity> shopProductsById;
 
-    @Id
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     public int getId() {
         return id;
